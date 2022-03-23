@@ -1,0 +1,11 @@
+Arduino and vscode: https://maker.pro/arduino/tutorial/how-to-use-visual-studio-code-for-arduino
+
+Arduino IDE path error: https://github.com/microsoft/vscode-arduino/issues/791
+
+
+
+
+
+Git Commands:
+
+git remove (undo chacnges)
