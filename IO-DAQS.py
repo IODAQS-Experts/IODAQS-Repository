@@ -17,26 +17,25 @@ class IO_DAQS:
 
     def CreateWidgets(self):
         self.CreateNotebook()
-
-        self.DesignTab1()
-        self.DesignTab2()
-        self.DesignTab3()
+        self.AddTab1_Notebook()
+        self.AddTab2_Notebook()
+        self.AddTab3_Notebook()
     
     def CreateNotebook(self):
         self.notebook = ttk.Notebook(self.MainWindow)
         self.notebook.pack(pady=10, expand =True)
 
-    def DesignTab1(self):
+    def AddTab1_Notebook(self):
         self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
         self.FrameTab1.pack(fill='both', expand=True)
         self.notebook.add(self.FrameTab1, text= "Apartado 1")
     
-    def DesignTab2(self):
+    def AddTab2_Notebook(self):
         self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
         self.FrameTab1.pack(fill='both', expand=True)
         self.notebook.add(self.FrameTab1, text= "Apartado 2")
 
-    def DesignTab3(self):
+    def AddTab3_Notebook(self):
         self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
         self.FrameTab1.pack(fill='both', expand=True)
         self.notebook.add(self.FrameTab1, text= "Apartado 3")
