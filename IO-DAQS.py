@@ -16,12 +16,15 @@ class IO_DAQS:
         self.CreateWidgets()
 
     def CreateWidgets(self):
-        #Crear un menu de ventanas (tabs)
-        self.notebook = ttk.Notebook(self.MainWindow)
-        self.notebook.pack(pady=10, expand =True)
+        self.CreateNotebook()
 
         self.DesignTab1()
         self.DesignTab2()
+        self.DesignTab3()
+    
+    def CreateNotebook(self):
+        self.notebook = ttk.Notebook(self.MainWindow)
+        self.notebook.pack(pady=10, expand =True)
 
     def DesignTab1(self):
         self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
@@ -33,6 +36,10 @@ class IO_DAQS:
         self.FrameTab1.pack(fill='both', expand=True)
         self.notebook.add(self.FrameTab1, text= "Apartado 2")
 
+    def DesignTab3(self):
+        self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
+        self.FrameTab1.pack(fill='both', expand=True)
+        self.notebook.add(self.FrameTab1, text= "Apartado 3")
 
 
 if __name__ == '__main__':
