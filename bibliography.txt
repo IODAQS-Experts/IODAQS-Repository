@@ -6,6 +6,8 @@ metodo .format -python: https://www.datacamp.com/community/tutorials/python-stri
 
 notebook class tkinter :https://recursospython.com/guias-y-manuales/panel-de-pestanas-notebook-tkinter/
 
+tkinter info: https://www.tcl.tk/man/tcl8.6/TkCmd/contents.html
+
 Git Commands:
 
 git remove (undo chacnges)

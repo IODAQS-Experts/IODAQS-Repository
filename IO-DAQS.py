@@ -10,6 +10,9 @@ import os
 class IO_DAQS:
     def __init__(self, Window):
         self.MainWindow = Window
+        self.MainWindow_width="1200"
+        self.MainWindow_height="550"
+        self.MainWindow.geometry('{}x{}'.format(self.MainWindow_width,self.MainWindow_height))
         self.CreateWidgets()
 
     def CreateWidgets(self):
@@ -19,34 +22,34 @@ class IO_DAQS:
     def CreateNotebook(self):
         self.notebook = ttk.Notebook(self.MainWindow)
         self.notebook.pack(pady=10, expand =True)
+        self.notebook.grid(row=0,column=0, columnspan=2)
 
     def AddTabs_Notebook(self,AmountTabs):
         for tab in range(1,AmountTabs+1):             #Amount of Tabs starts at 1 and increases as indicated
-            self.FrameTab = ttk.Frame(self.notebook, width=400, height=280)
-            self.FrameTab.pack(fill='both', expand=True)
+            self.FrameTab = ttk.Frame(self.notebook)
+            self.FrameTab.pack(fill='both')
+
             self.FillTabs(tab,self.FrameTab)   
             self.notebook.add(self.FrameTab, text= "Apartado {}".format(str(tab)))
     
     def FillTabs(self,tab,parent):
         if tab == 1:
-            contruction = self.FillTab1(parent)
+            self.FillTab1(parent)
         elif tab == 2:
-            contruction = self.FillTab2(parent)
+            self.FillTab2(parent)
         elif tab == 3:
-            contruction = self.FillTab3(parent)
+            self.FillTab3(parent)
         else:
             pass
-
-        return contruction
         
     def FillTab1(self,parent):
-        Label(parent, text = 'Welcome "Home" ').grid(row=0, column=0)
+        Label(parent, text = 'Welcome "Home" ',padx=50, pady=20).grid(row=0, column=0)
     
     def FillTab2(self,parent):
-        Label(parent, text = 'Welcome "WorkingArea"').grid(row=0, column=0)
+        Label(parent, text = 'Welcome "WorkingArea"',padx=50,pady=20).grid(row=0, column=0)
     
     def FillTab3(self,parent):
-        Label(parent, text = 'Welcome "About us"').grid(row=0, column=0)
+        Label(parent, text = 'Welcome "About us"',padx=50,pady=20).grid(row=0, column=0)
 
 
 if __name__ == '__main__':
