@@ -2,9 +2,9 @@ Arduino and vscode: https://maker.pro/arduino/tutorial/how-to-use-visual-studio-
 
 Arduino IDE path error: https://github.com/microsoft/vscode-arduino/issues/791
 
+metodo .format -python: https://www.datacamp.com/community/tutorials/python-string-format?utm_source=adwords_ppc&utm_medium=cpc&utm_campaignid=1455363063&utm_adgroupid=65083631748&utm_device=c&utm_keyword=&utm_matchtype=&utm_network=g&utm_adpostion=&utm_creative=332602034364&utm_targetid=aud-299261629574:dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9073906&gclid=CjwKCAjwiuuRBhBvEiwAFXKaNAfhwRVSIeEkhaoCnyPDoePZZhNA8IXw6OEWhT01icSg62s9c-HOwxoCPB8QAvD_BwE
 
-
-
+notebook class tkinter :https://recursospython.com/guias-y-manuales/panel-de-pestanas-notebook-tkinter/
 
 Git Commands:
 

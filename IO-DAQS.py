@@ -10,35 +10,43 @@ import os
 class IO_DAQS:
     def __init__(self, Window):
         self.MainWindow = Window
-        self.Sart_Time = 0
-        self.End_Time = 0
-
         self.CreateWidgets()
 
     def CreateWidgets(self):
         self.CreateNotebook()
-        self.AddTab1_Notebook()
-        self.AddTab2_Notebook()
-        self.AddTab3_Notebook()
+        self.AddTabs_Notebook(3)
     
     def CreateNotebook(self):
         self.notebook = ttk.Notebook(self.MainWindow)
         self.notebook.pack(pady=10, expand =True)
 
-    def AddTab1_Notebook(self):
-        self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
-        self.FrameTab1.pack(fill='both', expand=True)
-        self.notebook.add(self.FrameTab1, text= "Apartado 1")
+    def AddTabs_Notebook(self,AmountTabs):
+        for tab in range(1,AmountTabs+1):             #Amount of Tabs starts at 1 and increases as indicated
+            self.FrameTab = ttk.Frame(self.notebook, width=400, height=280)
+            self.FrameTab.pack(fill='both', expand=True)
+            self.FillTabs(tab,self.FrameTab)   
+            self.notebook.add(self.FrameTab, text= "Apartado {}".format(str(tab)))
     
-    def AddTab2_Notebook(self):
-        self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
-        self.FrameTab1.pack(fill='both', expand=True)
-        self.notebook.add(self.FrameTab1, text= "Apartado 2")
+    def FillTabs(self,tab,parent):
+        if tab == 1:
+            contruction = self.FillTab1(parent)
+        elif tab == 2:
+            contruction = self.FillTab2(parent)
+        elif tab == 3:
+            contruction = self.FillTab3(parent)
+        else:
+            pass
 
-    def AddTab3_Notebook(self):
-        self.FrameTab1 = ttk.Frame(self.notebook, width=400, height=280)
-        self.FrameTab1.pack(fill='both', expand=True)
-        self.notebook.add(self.FrameTab1, text= "Apartado 3")
+        return contruction
+        
+    def FillTab1(self,parent):
+        Label(parent, text = 'Welcome "Home" ').grid(row=0, column=0)
+    
+    def FillTab2(self,parent):
+        Label(parent, text = 'Welcome "WorkingArea"').grid(row=0, column=0)
+    
+    def FillTab3(self,parent):
+        Label(parent, text = 'Welcome "About us"').grid(row=0, column=0)
 
 
 if __name__ == '__main__':
