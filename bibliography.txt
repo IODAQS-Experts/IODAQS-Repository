@@ -19,3 +19,12 @@ git push -u <branch name>   (subir archivos a ramas no principales)
 git status                  (Estado de los archivos)
 git clone <repository name> (crear copia local de repositorio existente)
 git checkout <branch_name>  (Cambiar de rama)
+
+
+Organizar elementos graficos "Widgets":
+En el programa se opta por acomodarlos a modo de grilla o 
+tabla, en donde los elementos ocupan una celda, y las longitudes
+de las celdas se adpatan al tamaño del elemento.
+Si es necesario aumentar el tamaño, se utilizan los arguemtnos
+del atributo "grid", especfícamente, "padx" y "pady"
+por cada eje, en donde "pad" se traduce como "relleno"
