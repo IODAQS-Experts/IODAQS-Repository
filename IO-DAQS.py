@@ -10,17 +10,48 @@ import os
 class IO_DAQS:
     def __init__(self, Window):
         self.MainWindow = Window
-        self.Sart_Time = 0
-        self.End_Time = 0
+        self.MainWindow_Width="1200"
+        self.MainWindow_Height="550"
+        self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
+        
+        self.CreateWidgets()
 
     def CreateWidgets(self):
-        #Crear un menu de ventanas (tabs)
-        self.notebook = ttk.Notebook(self.window)
+        self.CreateNotebook()
+        self.AddTabs_Notebook(3)
+
+    def CreateNotebook(self):
+        self.notebook = ttk.Notebook(self.MainWindow)
         self.notebook.pack(pady=10, expand =True)
+        self.notebook.grid(row=0,column=0, columnspan=2)
 
-        self.notebook.add(self.notebook,text= "Apartado 1")
-        self.notebook.add(self.notebook,text= "Apartado 2")
+    def AddTabs_Notebook(self,AmountTabs):
+        for tab in range(1,AmountTabs+1):             #Amount of Tabs starts at 1 and increases as indicated
+            self.FrameTab = ttk.Frame(self.notebook)
+            self.FrameTab.pack(fill='both')
 
+            self.FillTabs(tab,self.FrameTab)   
+            self.notebook.add(self.FrameTab, text= "Apartado {}".format(str(tab)))
+        return self.notebook.tabs()
+    
+    def FillTabs(self,tab,parent):
+        if tab == 1:
+            self.FillTab1(parent)
+        elif tab == 2:
+            self.FillTab2(parent)
+        elif tab == 3:
+            self.FillTab3(parent)
+        else:
+            pass
+        
+    def FillTab1(self,parent):
+        Label(parent, text = 'Welcome "Home" ',padx=50, pady=20).grid(row=0, column=0)
+    
+    def FillTab2(self,parent):
+        Label(parent, text = 'Welcome "WorkingArea"',padx=50,pady=20).grid(row=0, column=0)
+    
+    def FillTab3(self,parent):
+        Label(parent, text = 'Welcome "About us"',padx=50,pady=20).grid(row=0, column=0)
 
 
 if __name__ == '__main__':

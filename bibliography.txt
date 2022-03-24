@@ -2,10 +2,19 @@ Arduino and vscode: https://maker.pro/arduino/tutorial/how-to-use-visual-studio-
 
 Arduino IDE path error: https://github.com/microsoft/vscode-arduino/issues/791
 
+metodo .format -python: https://www.datacamp.com/community/tutorials/python-string-format?utm_source=adwords_ppc&utm_medium=cpc&utm_campaignid=1455363063&utm_adgroupid=65083631748&utm_device=c&utm_keyword=&utm_matchtype=&utm_network=g&utm_adpostion=&utm_creative=332602034364&utm_targetid=aud-299261629574:dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9073906&gclid=CjwKCAjwiuuRBhBvEiwAFXKaNAfhwRVSIeEkhaoCnyPDoePZZhNA8IXw6OEWhT01icSg62s9c-HOwxoCPB8QAvD_BwE
 
+notebook class tkinter :https://recursospython.com/guias-y-manuales/panel-de-pestanas-notebook-tkinter/
 
-
+tkinter info: https://www.tcl.tk/man/tcl8.6/TkCmd/contents.html
 
 Git Commands:
 
-git remove (undo chacnges)
+git revert                  (revertir cambios)
+git add                     (Rastrear cambios de uno o mas archivos (-A))
+git commit -m               (Guardar cambios y escribir un mensaje de referencia) 
+git pushb -u main origin    (subir archivos a la rama principal)
+git push -u <branch name>   (subir archivos a ramas no principales)
+git status                  (Estado de los archivos)
+git clone <repository name> (crear copia local de repositorio existente)
+git checkout <branch_name>  (Cambiar de rama)
