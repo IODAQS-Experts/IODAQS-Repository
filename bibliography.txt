@@ -8,8 +8,9 @@ notebook class tkinter :https://recursospython.com/guias-y-manuales/panel-de-pes
 
 tkinter info: https://www.tcl.tk/man/tcl8.6/TkCmd/contents.html
 
-Git Commands:
 
+
+Git Commands: https://dzone.com/articles/top-20-git-commands-with-examples
 git revert                  (revertir cambios)
 git add                     (Rastrear cambios de uno o mas archivos (-A))
 git commit -m               (Guardar cambios y escribir un mensaje de referencia) 

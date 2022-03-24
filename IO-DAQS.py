@@ -4,10 +4,11 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import Tk
+from WorkingArea import Tab2Widgets
 import time
 import os
 
-class IO_DAQS:
+class IO_DAQS(Tab2Widgets):
     def __init__(self, Window):
         self.MainWindow = Window
         self.MainWindow_Width="1200"
@@ -29,29 +30,25 @@ class IO_DAQS:
         for tab in range(1,AmountTabs+1):             #Amount of Tabs starts at 1 and increases as indicated
             self.FrameTab = ttk.Frame(self.notebook)
             self.FrameTab.pack(fill='both')
-
-            self.FillTabs(tab,self.FrameTab)   
+  
             self.notebook.add(self.FrameTab, text= "Apartado {}".format(str(tab)))
+            self.FillTabs(tab,self.FrameTab) 
         return self.notebook.tabs()
     
-    def FillTabs(self,tab,parent):
+    def FillTabs(self,tab,parent):      #To do: Not to sue numbers, but Notebook's names
         if tab == 1:
             self.FillTab1(parent)
         elif tab == 2:
-            self.FillTab2(parent)
+            self.CreateWidgets_Tab2(parent)
         elif tab == 3:
             self.FillTab3(parent)
-        else:
-            pass
         
     def FillTab1(self,parent):
-        Label(parent, text = 'Welcome "Home" ',padx=50, pady=20).grid(row=0, column=0)
-    
-    def FillTab2(self,parent):
-        Label(parent, text = 'Welcome "WorkingArea"',padx=50,pady=20).grid(row=0, column=0)
+        Label(parent, text = 'Welcome "Home" ',padx=50, pady=20,font=('Arial Rounded MT Bold', 20)).grid(row=0, column=0)
+
     
     def FillTab3(self,parent):
-        Label(parent, text = 'Welcome "About us"',padx=50,pady=20).grid(row=0, column=0)
+        Label(parent, text = 'Welcome "About us"',padx=50,pady=20, font=('Arial Rounded MT Bold', 20)).grid(row=0, column=0)
 
 
 if __name__ == '__main__':
