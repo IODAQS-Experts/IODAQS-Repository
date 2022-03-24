@@ -10,15 +10,16 @@ import os
 class IO_DAQS:
     def __init__(self, Window):
         self.MainWindow = Window
-        self.MainWindow_width="1200"
-        self.MainWindow_height="550"
-        self.MainWindow.geometry('{}x{}'.format(self.MainWindow_width,self.MainWindow_height))
+        self.MainWindow_Width="1200"
+        self.MainWindow_Height="550"
+        self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
+        
         self.CreateWidgets()
 
     def CreateWidgets(self):
         self.CreateNotebook()
         self.AddTabs_Notebook(3)
-    
+
     def CreateNotebook(self):
         self.notebook = ttk.Notebook(self.MainWindow)
         self.notebook.pack(pady=10, expand =True)
@@ -31,6 +32,7 @@ class IO_DAQS:
 
             self.FillTabs(tab,self.FrameTab)   
             self.notebook.add(self.FrameTab, text= "Apartado {}".format(str(tab)))
+        return self.notebook.tabs()
     
     def FillTabs(self,tab,parent):
         if tab == 1:

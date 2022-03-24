@@ -10,4 +10,11 @@ tkinter info: https://www.tcl.tk/man/tcl8.6/TkCmd/contents.html
 
 Git Commands:
 
-git remove (undo chacnges)
+git revert                  (revertir cambios)
+git add                     (Rastrear cambios de uno o mas archivos (-A))
+git commit -m               (Guardar cambios y escribir un mensaje de referencia) 
+git pushb -u main origin    (subir archivos a la rama principal)
+git push -u <branch name>   (subir archivos a ramas no principales)
+git status                  (Estado de los archivos)
+git clone <repository name> (crear copia local de repositorio existente)
+git checkout <branch_name>  (Cambiar de rama)
