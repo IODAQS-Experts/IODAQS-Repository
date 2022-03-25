@@ -8,9 +8,17 @@ notebook class tkinter :https://recursospython.com/guias-y-manuales/panel-de-pes
 
 tkinter info: https://www.tcl.tk/man/tcl8.6/TkCmd/contents.html
 
+tkinter pack() attribute: https://www.pythontutorial.net/tkinter/tkinter-pack/
 
+spinbox example: https://www.pythontutorial.net/tkinter/tkinter-spinbox/
+
+python classes: https://docs.python.org/3/tutorial/classes.html
+
+tkinter labels: https://www.geeksforgeeks.org/python-tkinter-label/
 
 Git Commands: https://dzone.com/articles/top-20-git-commands-with-examples
+              https://education.github.com/git-cheat-sheet-education.pdf
+              https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html
 git revert                  (revertir cambios)
 git add                     (Rastrear cambios de uno o mas archivos (-A))
 git commit -m               (Guardar cambios y escribir un mensaje de referencia) 
