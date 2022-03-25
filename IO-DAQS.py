@@ -25,13 +25,13 @@ class IO_DAQS(Tab2Widgets):
         self.notebook = ttk.Notebook(self.MainWindow,
             width=self.MainWindow_Width,
             height=self.MainWindow_Height)
-        #self.notebook.pack()
+        #self.notebook.pack(fill='both', expand=True)
         self.notebook.grid(row=0,column=0, padx=10, ipadx=20)
 
     def AddTabs_Notebook(self,AmountTabs):
         for tab in range(1,AmountTabs+1):             #Amount of Tabs starts at 1 and increases as indicated
             self.FrameTab = ttk.Frame(self.notebook, width='1200', height='550')
-            self.FrameTab.pack(fill='both', expand=True)
+            #self.FrameTab.pack(fill='both', expand=True)
             self.FrameTab.grid(row=1,column=0)
 
             self.notebook.add(self.FrameTab, text= "Apartado {}".format(str(tab)))
