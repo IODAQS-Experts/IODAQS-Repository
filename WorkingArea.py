@@ -14,7 +14,7 @@ class Tab2Widgets:
         self.CreateFrames(ParentFrame)
         self.CreateLabelFrames(self.FrameTab2)
         self.CreateLabels(self.FrameTab2)
-        self.CreateSpinBox(self.MeasurementTime)
+        self.CreateSpinBox(self.MeasurementTime_LFrame)
         self.CreateButtons(ParentFrame)
     
         return self.FrameTab2
@@ -34,25 +34,29 @@ class Tab2Widgets:
         self.Title.grid(row=0, column=0, columnspan=1)
 
         #-------Labels in MeasurementTime Label Frame-------#
-        self.StartTimeLabel=Label(self.MeasurementTime, text = 'Tiempo Inicial (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.StartTimeLabel.grid(row=0, column=0, ipadx=8, ipady=10, pady=10)
+        self.StartTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Inicial (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.StartTimeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
 
-        self.EndTimeLabel=Label(self.MeasurementTime, text = 'Tiempo Final (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.EndTimeLabel.grid(row=1, column=0, ipadx=10, ipady=10, pady=10)
+        self.EndTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Final (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.EndTimeLabel.grid(row=1, column=0, ipadx=1, ipady=5, pady=5)
 
-        self.TotalTimeLabel=Label(self.MeasurementTime, text = 'Tiempo Total (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.TotalTimeLabel.grid(row=2, column=0, columnspan=2, ipady=10, pady=10)
+        self.TotalTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Total (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.TotalTimeLabel.grid(row=2, column=0, columnspan=2, ipady=5, pady=5)
 
 
     def CreateLabelFrames(self,ParentFrame):
-        self.MeasurementTime = LabelFrame(ParentFrame, width=300, height= 200, text="Tiempo de Medición", 
+        self.MeasurementTime_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Tiempo de Medición", 
         font=('Arial Rounded MT Bold', 12), labelanchor= "nw", relief="solid")
-        self.MeasurementTime.grid(row=1, column=0, padx = 40, pady=20, ipadx=20,ipady=5)
+        self.MeasurementTime_LFrame.grid(row=1, column=0, padx = 40, pady=10, ipadx=20,ipady=5)
+
+        self.SamplingRatio_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Razón de Muestreo", 
+        font=('Arial Rounded MT Bold', 12), labelanchor= "nw", relief="solid")
+        self.SamplingRatio_LFrame.grid(row=2, column=0, padx = 40, pady=5, ipadx=20,ipady=5)
         
     def CreateSpinBox(self,ParentFrame):
         self.StartTime = Spinbox(ParentFrame, from_=0.0, to=1800.0)
-        self.StartTime.grid(row=0, column=1, ipadx=30,ipady=10 )
+        self.StartTime.grid(row=0, column=1, ipadx=15,ipady=5, padx=8 )
 
         self.EndTime = Spinbox(ParentFrame, from_=0.0, to=1800.0)
-        self.EndTime.grid(row=1, column=1, ipadx=30,ipady=10)
+        self.EndTime.grid(row=1, column=1, ipadx=15,ipady=5, padx=8)
 

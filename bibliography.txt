@@ -28,6 +28,9 @@ git status                  (Estado de los archivos)
 git clone <repository name> (crear copia local de repositorio existente)
 git checkout <branch_name>  (Cambiar de rama)
 
+resolver conflictos git (merge): https://laboratoria1.gitbook.io/manual-git/capitulos/subir-mi-trabajo-y-resolver-conflictos
+
+deshacer la fusión de ramas: https://stackoverflow.com/questions/11646107/you-have-not-concluded-your-merge-merge-head-exists
 
 Organizar elementos graficos "Widgets":
 En el programa se opta por acomodarlos a modo de grilla o 
