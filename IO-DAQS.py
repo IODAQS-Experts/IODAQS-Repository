@@ -1,5 +1,5 @@
 #Porject Name: IO-DAQS (Input Output Data Acquisition System)       juliomoreno7217@gmail.com
-#Creation date: 2022 / march / 3 / 16:55 h
+#Creation date: 2022 / march / 3 / 16:55 h          mensaje nuevo
 
 from tkinter import *
 from tkinter import ttk
@@ -38,6 +38,9 @@ class IO_DAQS(Tab2Widgets):
             self.FillTab1(ParentName)
             self.CreateWidgets_Tab2(ParentName)
             self.FillTab3(ParentName)
+            
+
+            
     #To do: Filltab1 and FilTab3 muest be gone!     
     def FillTab1(self,ParentName):
         self.FrameTab1 = ttk.Frame(ParentName, width='1200', height='600')
