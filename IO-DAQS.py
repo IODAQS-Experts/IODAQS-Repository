@@ -1,5 +1,5 @@
 #Porject Name: IO-DAQS (Input Output Data Acquisition System)       juliomoreno7217@gmail.com
-#Creation date: 2022 / march / 3 / 16:55 h          mensaje nuevo
+#Creation date: 2022 / march / 3 / 16:55 h          
 
 from tkinter import *
 from tkinter import ttk
