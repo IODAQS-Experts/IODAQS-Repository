@@ -125,3 +125,16 @@ class Tab2Widgets:
         self.SampligCoefficient = Spinbox(self.SamplingTime_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0)
         self.SampligCoefficient.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 
+
+    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
+    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
+
+    def RunMeasurements(self):
+        pass
+
+    def StopMeasurements(self):
+        pass
+
+    def SaveMeasurements(self):
+        pass
+

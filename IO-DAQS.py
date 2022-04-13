@@ -13,7 +13,7 @@ class IO_DAQS(Tab2Widgets):
         super().__init__()
         self.MainWindow = Window
         self.MainWindow_Width="1200"
-        self.MainWindow_Height="600"
+        self.MainWindow_Height="650"
         self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
         
         self.CreateWidgets()
@@ -55,6 +55,8 @@ class IO_DAQS(Tab2Widgets):
 
         self.Title3 = Label(self.FrameTab3, text = 'Welcome "About us"',padx=50,pady=20, font=('Arial Rounded MT Bold', 20))
         self.Title3.grid(row=0, column=0)
+
+
 
 if __name__ == '__main__':
     Window = Tk()
