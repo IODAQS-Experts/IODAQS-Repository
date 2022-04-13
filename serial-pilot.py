@@ -14,8 +14,8 @@ try:
 
     def commands():
         print("""*********************
-* 1 >> Turn off led *
-* 0 >> Turn on led  *
+* 1 >> Turn on led *
+* 0 >> Turn off led  *
 * X >> Exit         *
 *********************
         """)

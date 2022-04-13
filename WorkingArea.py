@@ -52,14 +52,11 @@ class Tab2Widgets:
         self.Title.grid(row=0, column=0, columnspan=1)
 
         #-------Labels in MeasurementTime Label Frame-------#
-        self.StartTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Inicial (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.StartTimeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
-
-        self.EndTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Final (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.EndTimeLabel.grid(row=1, column=0, ipadx=1, ipady=5, pady=5)
+        self.EndTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Duración: (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.EndTimeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
 
         self.TotalTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Total (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.TotalTimeLabel.grid(row=2, column=0, columnspan=2, ipady=5, pady=5)
+        self.TotalTimeLabel.grid(row=1, column=0, columnspan=2, ipady=5, pady=5)
 
         #-------Labels in SamplingRatio Label Frame----------#
         self.SamplingUnitLabel=Label(self.SamplingRatio_LFrame, text = 'Unidad de Muestreo:  ', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
@@ -116,11 +113,8 @@ class Tab2Widgets:
 
     def CreateSpinBox(self,ParentFrame):
         #-------SpinBoxes in MeasurementTime Label Frame-------#
-        self.StartTime = Spinbox(ParentFrame, from_=0.0, to=1800.0)
-        self.StartTime.grid(row=0, column=1, ipadx=1,ipady=5, padx=8 )
-
-        self.EndTime = Spinbox(ParentFrame, from_=0.0, to=1800.0)
-        self.EndTime.grid(row=1, column=1, ipadx=0,ipady=0, padx=8)
+        self.MeasurementTime = Spinbox(ParentFrame, from_=0.0, to=1800.0)
+        self.MeasurementTime.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 
         #-------SpinBoxes in SamplingRatio Label Frame----------#
         self.SampligCoefficient = Spinbox(self.SamplingRatio_LFrame, from_=0.0, to=1800.0)
