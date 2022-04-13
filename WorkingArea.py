@@ -29,14 +29,10 @@ class Tab2Widgets:
 
 
     def CreateComboboxes(self):
-        #-------Comboboxes in SamplingRatio Label Frame----------#
-        self.SamplingUnit = ttk.Combobox(self.SamplingRatio_LFrame, value=['Tiempo','Frecuencia'])
-        self.SamplingUnit.set('Tiempo')
-        self.SamplingUnit.grid(row=0, column=1)
-
-        self.SamplingPrefix = ttk.Combobox(self.SamplingRatio_LFrame, value=['ks','ms','us','ps'])
+        #-------Comboboxes in SamplingTime Label Frame----------#
+        self.SamplingPrefix = ttk.Combobox(self.SamplingTime_LFrame,width=3, value=['ks','ms','us','ns'])
         self.SamplingPrefix.set('s')
-        self.SamplingPrefix.grid(row=1, column=1)  
+        self.SamplingPrefix.grid(row=0, column=2)  
 
 
 
@@ -52,24 +48,19 @@ class Tab2Widgets:
         self.Title.grid(row=0, column=0, columnspan=1)
 
         #-------Labels in MeasurementTime Label Frame-------#
-        self.EndTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Duración: (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.EndTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Duración: (s)', anchor='c', font=('Arial Rounded MT Bold', 9))
         self.EndTimeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
 
-        self.TotalTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Total (s)', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.TotalTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Total: (s)', anchor='c', font=('Arial Rounded MT Bold', 9))
         self.TotalTimeLabel.grid(row=1, column=0, columnspan=2, ipady=5, pady=5)
 
-        #-------Labels in SamplingRatio Label Frame----------#
-        self.SamplingUnitLabel=Label(self.SamplingRatio_LFrame, text = 'Unidad de Muestreo:  ', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.SamplingUnitLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
-
-        self.UnitPrefixLabel=Label(self.SamplingRatio_LFrame, text = 'Prefijo de Unidad:  ', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.UnitPrefixLabel.grid(row=1, column=0, ipadx=1, ipady=5, pady=5)
-
-        self.MagnitudLabel=Label(self.SamplingRatio_LFrame, text = 'Prefijo de Unidad:  ', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
-        self.MagnitudLabel.grid(row=2, column=0, ipadx=1, ipady=5, pady=5)
+        #-------Labels in SamplingTime Label Frame----------#
+        
+        self.SamplingTime_Label=Label(self.SamplingTime_LFrame, text = 'Tiempo de Muestreo:  ', anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.SamplingTime_Label.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
 
         #-------Labels in Signal Label Frame-----------------#
-        self.SignalTypeLabel=Label(self.Signal_LFrame, text = 'Tipo de Señal:  ', anchor='c', font=('Arial Rounded MT Bold', 9), relief="solid")
+        self.SignalTypeLabel=Label(self.Signal_LFrame, text = 'Tipo de Señal:  ', anchor='c', font=('Arial Rounded MT Bold', 9))
         self.SignalTypeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5, columnspan=2)
 
 
@@ -77,15 +68,15 @@ class Tab2Widgets:
     def CreateLabelFrames(self,ParentFrame):
         self.MeasurementTime_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Tiempo de Medición", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.MeasurementTime_LFrame.grid(row=1, column=0, padx = 40, pady=5, ipadx=20,ipady=1)
+        self.MeasurementTime_LFrame.grid(row=1, column=0, padx = 40, pady=15, ipadx=20,ipady=1)
 
-        self.SamplingRatio_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Razón de Muestreo", 
+        self.SamplingTime_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Razón de Muestreo", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.SamplingRatio_LFrame.grid(row=1, column=1, padx = 40, pady=5, ipadx=20,ipady=5)
+        self.SamplingTime_LFrame.grid(row=2, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
         self.Signal_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Careacterísticas de señal", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.Signal_LFrame.grid(row=1, column=2, padx = 40, pady=5, ipadx=20,ipady=5)
+        self.Signal_LFrame.grid(row=3, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
 
 
@@ -113,10 +104,10 @@ class Tab2Widgets:
 
     def CreateSpinBox(self,ParentFrame):
         #-------SpinBoxes in MeasurementTime Label Frame-------#
-        self.MeasurementTime = Spinbox(ParentFrame, from_=0.0, to=1800.0)
+        self.MeasurementTime = Spinbox(ParentFrame,width=7, from_=0.0, to=1800.0)
         self.MeasurementTime.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 
-        #-------SpinBoxes in SamplingRatio Label Frame----------#
-        self.SampligCoefficient = Spinbox(self.SamplingRatio_LFrame, from_=0.0, to=1800.0)
-        self.SampligCoefficient.grid(row=2, column=1, ipadx=0,ipady=0, padx=8)
+        #-------SpinBoxes in SamplingTime Label Frame----------#
+        self.SampligCoefficient = Spinbox(self.SamplingTime_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0)
+        self.SampligCoefficient.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 
