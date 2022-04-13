@@ -19,12 +19,22 @@ class Tab2Widgets:
         self.CreateComboboxes()
         self.CreateSliders()
         self.CreateRadiobuttons()
+        self.CreateButtons()
         return self.FrameTab2
 
 
 
-    def CreatButtons(self):
-        pass
+    def CreateButtons(self):
+        #-------Buttons in Controls Label Frame ---------#
+        self.RunButton= Button(self.Controls_LFrame, text="Ejecutar", anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.RunButton.grid(row=0, column=0, padx=25)
+        
+        self.StopButton= Button(self.Controls_LFrame, text="Detener", anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.StopButton.grid(row=0, column=1,padx=8 )
+
+        self.SaveButton= Button(self.Controls_LFrame, text="Guardar", anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.SaveButton.grid(row=0, column=2,padx=8 )
+        
 
 
 
@@ -77,6 +87,10 @@ class Tab2Widgets:
         self.Signal_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Careacterísticas de señal", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.Signal_LFrame.grid(row=3, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
+
+        self.Controls_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Controles de Operación", 
+        font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
+        self.Controls_LFrame.grid(row=4, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
 
 
