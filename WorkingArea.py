@@ -26,7 +26,7 @@ class Tab2Widgets:
 
     def CreateButtons(self):
         #-------Buttons in Controls Label Frame ---------#
-        self.RunButton= Button(self.Controls_LFrame, text="Ejecutar", anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.RunButton= Button(self.Controls_LFrame, command=self.RunMeasurements, text="Ejecutar", anchor='c', font=('Arial Rounded MT Bold', 9))
         self.RunButton.grid(row=0, column=0, padx=25)
         
         self.StopButton= Button(self.Controls_LFrame, text="Detener", anchor='c', font=('Arial Rounded MT Bold', 9))
@@ -124,17 +124,4 @@ class Tab2Widgets:
         #-------SpinBoxes in SamplingTime Label Frame----------#
         self.SampligCoefficient = Spinbox(self.SamplingTime_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0)
         self.SampligCoefficient.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
-
-
-    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
-    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
-
-    def RunMeasurements(self):
-        pass
-
-    def StopMeasurements(self):
-        pass
-
-    def SaveMeasurements(self):
-        pass
 

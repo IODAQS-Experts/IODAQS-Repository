@@ -55,7 +55,20 @@ class IO_DAQS(Tab2Widgets):
 
         self.Title3 = Label(self.FrameTab3, text = 'Welcome "About us"',padx=50,pady=20, font=('Arial Rounded MT Bold', 20))
         self.Title3.grid(row=0, column=0)
+    
+    
+    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
+    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
+    def RunMeasurements(self):
+        print("Measurements started!")
+        print(self.MeasurementTime.get(), " ", type(self.MeasurementTime.get()))
+        pass
 
+    def StopMeasurements(self):
+        pass
+
+    def SaveMeasurements(self):
+        pass
 
 
 if __name__ == '__main__':
