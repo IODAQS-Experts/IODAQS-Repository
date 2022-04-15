@@ -15,7 +15,8 @@ class IO_DAQS(Tab2Widgets):
         self.MainWindow_Width="1200"
         self.MainWindow_Height="650"
         self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
-        
+        self.Title="Interfaz Python-Arduino"
+
         self.CreateWidgets()
 
     def CreateWidgets(self):
@@ -60,9 +61,25 @@ class IO_DAQS(Tab2Widgets):
     ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
     ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
     def RunMeasurements(self):
+
+        if self.SamplingPrefix.get()=='s':
+            self.SamplingTime= str(float(self.SampligCoefficient.get())*1)
+        elif self.SamplingPrefix.get()=='ks':
+            self.SamplingTime= str(float(self.SampligCoefficient.get())*1000)
+        elif self.SamplingPrefix.get()=='ms':
+            self.SamplingTime= str(float(self.SampligCoefficient.get())*.001)
+        elif self.SamplingPrefix.get()=='us':
+            self.SamplingTime= str(float(self.SampligCoefficient.get())*.000001)
+        elif self.SamplingPrefix.get()=='ns':
+            self.SamplingTime= str(float(self.SampligCoefficient.get())*.000000001)
+
         print("Measurements started!")
-        print(self.MeasurementTime.get(), " ", type(self.MeasurementTime.get()))
-        pass
+        print("Tiempo de medición: ", self.MeasurementTime.get())
+        print("Tiempo de muestreo: ", self.SamplingTime)
+        print("Tipo de señal: ", self.SignalType.get())
+        print("Voltaje de entrada: ", self.InputVoltage.get())
+        print("Prefijo: ", self.SamplingPrefix.get(), "\n")
+    
 
     def StopMeasurements(self):
         pass

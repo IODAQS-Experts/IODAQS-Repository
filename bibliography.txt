@@ -12,6 +12,8 @@ tkinter pack() attribute: https://www.pythontutorial.net/tkinter/tkinter-pack/
 
 spinbox example: https://www.pythontutorial.net/tkinter/tkinter-spinbox/
 
+radiobuttons :https://www.plus2net.com/python/tkinter-radiobutton.php
+
 python classes: https://docs.python.org/3/tutorial/classes.html
 
 tkinter labels: https://www.geeksforgeeks.org/python-tkinter-label/

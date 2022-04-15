@@ -96,16 +96,19 @@ class Tab2Widgets:
 
     def CreateRadiobuttons(self):
         #-------Radiobuttons in Signal Label Frame----------#
-        self.StepInput = Radiobutton(self.Signal_LFrame, text='Escalon', value='step')
+        self.SignalType = StringVar()
+        self.SignalType.set("step")
+
+        self.StepInput = Radiobutton(self.Signal_LFrame, text='Escalon', value='step', variable=self.SignalType)
         self.StepInput.grid(row=1, column=0 )
 
-        self.SlopeInput = Radiobutton(self.Signal_LFrame, text='Rampa', value='slope')
+        self.SlopeInput = Radiobutton(self.Signal_LFrame, text='Rampa', value='slope', variable=self.SignalType)
         self.SlopeInput.grid(row=1, column=1)
 
-        self.NoiseInput = Radiobutton(self.Signal_LFrame, text='Ruido', value='noise')
+        self.NoiseInput = Radiobutton(self.Signal_LFrame, text='Ruido', value='noise', variable=self.SignalType)
         self.NoiseInput.grid(row=2, column=0)
 
-        self.SineInput = Radiobutton(self.Signal_LFrame, text='Senoidal', value='senoidal')
+        self.SineInput = Radiobutton(self.Signal_LFrame, text='Senoidal', value='senoidal', variable=self.SignalType)
         self.SineInput.grid(row=2, column=1)
         
 
