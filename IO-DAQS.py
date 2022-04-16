@@ -61,12 +61,15 @@ class IO_DAQS(Tab2Widgets):
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     def RunMeasurements(self):
-        self.EvaluateDataType()
-        
+        print(self.EvaluateDataType())
+
+
+
     def ShowErrorMessage(self):
         #The must appear a window showing the error, and the inputs must be set to default
         print("\nIncorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*\n")        
     
+
     def EvaluateDataType(self):
         try:
             #Sampling-time-prefix adecuation
@@ -78,18 +81,16 @@ class IO_DAQS(Tab2Widgets):
 
             #Time quantities must be greater than 0!      
             if float(self.MeasurementTime.get())>=0 and float(self.SamplingTime)>=0:
-                print("Measurements started!")
-                print("Tiempo de medición: ", self.MeasurementTime.get())
-                print("Tiempo de muestreo: ", self.SamplingTime)
-                print("Tipo de señal: ", self.SignalType.get())
-                print("Voltaje de entrada: ", self.InputVoltage.get())
+                return self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InputVoltage.get()
             else:
                 self.ShowErrorMessage()
         except:
             self.ShowErrorMessage()       
 
+
     def StopMeasurements(self):
         pass
+
 
     def SaveMeasurements(self):
         pass
