@@ -58,28 +58,37 @@ class IO_DAQS(Tab2Widgets):
         self.Title3.grid(row=0, column=0)
     
     
-    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
-    ##INTERACTION ZONE####INTERACTION##ZONE####INTERACTION ZONE####INTERACTION ZONE##
+    ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
+    ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     def RunMeasurements(self):
-
-        if self.SamplingPrefix.get()=='s':
-            self.SamplingTime= str(float(self.SampligCoefficient.get())*1)
-        elif self.SamplingPrefix.get()=='ks':
-            self.SamplingTime= str(float(self.SampligCoefficient.get())*1000)
-        elif self.SamplingPrefix.get()=='ms':
-            self.SamplingTime= str(float(self.SampligCoefficient.get())*.001)
-        elif self.SamplingPrefix.get()=='us':
-            self.SamplingTime= str(float(self.SampligCoefficient.get())*.000001)
-        elif self.SamplingPrefix.get()=='ns':
-            self.SamplingTime= str(float(self.SampligCoefficient.get())*.000000001)
-
-        print("Measurements started!")
-        print("Tiempo de medición: ", self.MeasurementTime.get())
-        print("Tiempo de muestreo: ", self.SamplingTime)
-        print("Tipo de señal: ", self.SignalType.get())
-        print("Voltaje de entrada: ", self.InputVoltage.get())
-        print("Prefijo: ", self.SamplingPrefix.get(), "\n")
+        self.EvaluateDataType()
+        
+    def ShowErrorMessage(self):
+        #The must appear a window showing the error, and the inputs must be set to default
+        print("\nIncorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*\n")        
     
+    def EvaluateDataType(self):
+        try:
+            print("working A")
+            #Sampling-time-prefix adecuation
+            prefix={'s':1,'ks':1000,'ms':.001,'us':.000001,'ns':.000000001}
+            for key in prefix:
+                if self.SamplingPrefix==key:
+                    self.SamplingTime=str(float(self.SampligCoefficient.get()*prefix.get(key)))
+
+            print("working B")
+
+            #Time quantities must be greater than 0!      
+            if float(self.MeasurementTime.get())>=0 and float(self.SamplingTime)>=0:
+                print("Measurements started!")
+                print("Tiempo de medición: ", self.MeasurementTime.get())
+                print("Tiempo de muestreo: ", self.SamplingTime)
+                print("Tipo de señal: ", self.SignalType.get())
+                print("Voltaje de entrada: ", self.InputVoltage.get())
+            else:
+                self.ShowErrorMessage()
+        except:
+            self.ShowErrorMessage()       
 
     def StopMeasurements(self):
         pass
