@@ -7,12 +7,13 @@ from tkinter import Tk
 from WorkingArea import Tab2Widgets    
 import time
 import os
+import serial
 
 class IO_DAQS(Tab2Widgets):
     def __init__(self, Window):
         super().__init__()
         self.MainWindow = Window
-        self.MainWindow_Width="1200"
+        self.MainWindow_Width="650"
         self.MainWindow_Height="650"
         self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
         self.Title="Interfaz Python-Arduino"
@@ -61,14 +62,8 @@ class IO_DAQS(Tab2Widgets):
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     def RunMeasurements(self):
-        print(self.EvaluateDataType())
-
-
-
-    def ShowErrorMessage(self):
-        #The must appear a window showing the error, and the inputs must be set to default
-        print("\nIncorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*\n")        
-    
+        self.SendDataToArduino(self.EvaluateDataType())
+       
 
     def EvaluateDataType(self):
         try:
@@ -81,11 +76,31 @@ class IO_DAQS(Tab2Widgets):
 
             #Time quantities must be greater than 0!      
             if float(self.MeasurementTime.get())>=0 and float(self.SamplingTime)>=0:
-                return self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InputVoltage.get()
-            else:
-                self.ShowErrorMessage()
+                return self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),str(self.InputVoltage.get())
         except:
-            self.ShowErrorMessage()       
+            pass      
+
+    def SendDataToArduino(self,parameters=()):
+        try:    
+            self.DataChain = ",".join(parameters)   #makes a single string separated by the symbol inside ""
+            print(self.DataChain)
+
+            self.EvaluateConexion(self.DataChain)
+        except:
+            self.ShowErrorMessage("Incorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*")
+            
+    
+    def EvaluateConexion(self, data):
+        try:
+            arduino = serial.Serial("com3",9600)    #Open serial Port
+            arduino.write(data.encode("ascii"))
+        except:
+            self.ShowErrorMessage("Arduino Connection Failed*")
+        pass
+    
+    def ShowErrorMessage(self, message):
+        #The must appear a window showing the error, and the inputs must be set to default
+        print("\n{}\n".format(message))   
 
 
     def StopMeasurements(self):
