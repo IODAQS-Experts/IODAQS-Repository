@@ -69,14 +69,12 @@ class IO_DAQS(Tab2Widgets):
     
     def EvaluateDataType(self):
         try:
-            print("working A")
             #Sampling-time-prefix adecuation
             prefix={'s':1,'ks':1000,'ms':.001,'us':.000001,'ns':.000000001}
+            
             for key in prefix:
-                if self.SamplingPrefix==key:
-                    self.SamplingTime=str(float(self.SampligCoefficient.get()*prefix.get(key)))
-
-            print("working B")
+                if self.SamplingPrefix.get()==key:
+                    self.SamplingTime=str(float(self.SampligCoefficient.get())*prefix.get(key))
 
             #Time quantities must be greater than 0!      
             if float(self.MeasurementTime.get())>=0 and float(self.SamplingTime)>=0:
