@@ -45,3 +45,10 @@ de las celdas se adpatan al tamaño del elemento.
 Si es necesario aumentar el tamaño, se utilizan los arguemtnos
 del atributo "grid", especfícamente, "padx" y "pady"
 por cada eje, en donde "pad" se traduce como "relleno"
+
+
+Notas/Observaciones:
+
+19/04/2022      Los pines analogicos del Arduino tienen un periodo mínimo de muestreo de 100 us
+                La cantidad de bits en el conversor analógico-digital es de 10, resolución=.0049 V/unit
+                Solo lee un máximo de 5V

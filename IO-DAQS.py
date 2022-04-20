@@ -75,7 +75,7 @@ class IO_DAQS(Tab2Widgets):
                     self.SamplingTime=str(float(self.SampligCoefficient.get())*prefix.get(key))
 
             #Time quantities must be greater than 0!      
-            if float(self.MeasurementTime.get())>=0 and float(self.SamplingTime)>=0:
+            if float(self.MeasurementTime.get())>=0 and float(self.SamplingTime)>=.0001:
                 return self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),str(self.InputVoltage.get())
         except:
             pass      
