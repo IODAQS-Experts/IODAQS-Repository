@@ -3,12 +3,12 @@ int  PIN_led = 13;
 #define ArraySize 4
 String parameters[ArraySize], DataChain, element;
 #define SeparatorCharacter ","
-int InitialPosition, Separator_LastPosition, ArrayIndex;
+int SubstringInitialPosition, SubstringLastPosition, ArrayIndex;
 
 void setup() {
-  Serial.begin(9600);                     //Serial Port opened at a baudrate of 9600 b/s
-  pinMode(PIN_led,OUTPUT);                //The pin "2" is named as "señal" and is setted up as an output
-  digitalWrite(PIN_led,1);                // The initial state of "señal" is off
+  Serial.begin(9600);                     
+  pinMode(PIN_led,OUTPUT);                
+  digitalWrite(PIN_led,1);                
 }
 
 void loop() {
@@ -16,25 +16,25 @@ void loop() {
  }
 
  void DecodeDataChain() {
-  if(Serial.available()){
-    DataChain = Serial.readString();
-    Serial.println(DataChain);
-    InitialPosition=0;
-    Separator_LastPosition = DataChain.indexOf(SeparatorCharacter,InitialPosition);
+  if(Serial.available()){                                                             //Check if the port is opened
+    DataChain = Serial.readString();                                                  //if true, save the string in a variable
+    Serial.println(DataChain);                                                        //print the string in serial monitor
+    SubstringInitialPosition=0;                                                                //first character's position of the first substring
+    SubstringLastPosition = DataChain.indexOf(SeparatorCharacter,SubstringInitialPosition);   //last character's position of the first substring
     
     ArrayIndex = 0;
-    while (Separator_LastPosition!=-1) {
+    while (SubstringLastPosition!=-1) {
       Serial.print(ArrayIndex);
-      element = DataChain.substring(InitialPosition,  Separator_LastPosition); 
+      element = DataChain.substring(SubstringInitialPosition,  SubstringLastPosition); 
       parameters[ArrayIndex]= element;
   
-      InitialPosition = Separator_LastPosition+1;
-      Separator_LastPosition = DataChain.indexOf(SeparatorCharacter, InitialPosition);
+      SubstringInitialPosition = SubstringLastPosition+1;
+      SubstringLastPosition = DataChain.indexOf(SeparatorCharacter, SubstringInitialPosition);
       ArrayIndex =ArrayIndex+1;
     }
     Serial.println(ArrayIndex);
     Serial.println(" ");
-    element = DataChain.substring(InitialPosition, DataChain.length());
+    element = DataChain.substring(SubstringInitialPosition, DataChain.length());
     parameters[ArraySize-1] = element;
     Serial.println(parameters[0]);
     Serial.println(parameters[1]);
