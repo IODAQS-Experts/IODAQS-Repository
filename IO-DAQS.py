@@ -68,7 +68,7 @@ class IO_DAQS(Tab2Widgets):
     def EvaluateDataType(self):
         try:
             #Sampling-time-prefix adecuation
-            prefix={'s':1,'ks':1000,'ms':.001,'us':.000001,'ns':.000000001}
+            prefix={'s':1,'ks':1000,'ms':.001,'us':.000001}
             
             for key in prefix:
                 if self.SamplingPrefix.get()==key:
@@ -92,7 +92,7 @@ class IO_DAQS(Tab2Widgets):
     
     def EvaluateConexion(self, data):
         try:
-            arduino = serial.Serial("com3",9600)    #Open serial Port
+            arduino = serial.Serial("com3",115200)    #Open serial Port
             arduino.write(data.encode("ascii"))
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
