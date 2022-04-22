@@ -114,7 +114,7 @@ class Tab2Widgets:
 
 
     def CreateSliders(self):
-        self.InputVoltage = Scale(self.Signal_LFrame, from_=0, to=10, orient='horizontal', resolution=.001, label='Voltaje')
+        self.InputVoltage = Scale(self.Signal_LFrame, from_=0, to=4.52, orient='horizontal', resolution=.01, label='Voltaje')
         self.InputVoltage.grid(row=3, column=0, columnspan=2)
 
 

@@ -1,11 +1,11 @@
-int  PIN_led = 13;
+
 #define FeedingVoltagePin A0
 #define InputPinMeasurement A1
 #define OutputPinMeasurement A2
 
 
 void setup() {
-  Serial.begin(115200);                     
+  Serial.begin(9600);                     
   pinMode(FeedingVoltagePin,OUTPUT);                
   pinMode(InputPinMeasurement,INPUT);
   pinMode(OutputPinMeasurement,INPUT);                
@@ -44,22 +44,19 @@ void DecodeDataChain() {
     element = DataChain.substring(SubstringInitialPosition, DataChain.length());
     parameters[ArraySize-1] = element;
 
-    //###At this point the array is already created and stores Strings
-    unsigned float MeasuremenTime = parameters[0].toFloat()*1000000;    //Time in seconds conveerted in microseconds
-    unsigned float SamplingTime = parameters[1].toFloat()*1000000;      //Time in seconds converted in microseconds
+    //###At this point the array is already created and stores Strings  
+    float MeasuremenTime = parameters[0].toFloat();    //Time in seconds conveerted in microseconds
+    float SamplingTime = parameters[1].toFloat();      //Time in seconds converted in microseconds
     String SignalType = parameters[2];
-    unsigned long 
+    #define MaxPWMVoltage 4.52
 
     //###A PWM signal will be used, so the voltaje must converted into a duty cycle valid integer number (0-255) 
-    unsigned float InputVoltage = round((255/5)*parameters[3].toFloat());
+    int InputVoltage = round((255/MaxPWMVoltage)*parameters[3].toFloat());
 
     Serial.println(MeasuremenTime);
     Serial.println(SamplingTime);
     Serial.println(SignalType);
     Serial.println(InputVoltage);
-
-
-    
   }
 } 
 
