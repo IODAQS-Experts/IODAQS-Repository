@@ -1,12 +1,11 @@
 
-#define FeedingVoltagePin 3
+const int FeedingVoltagePin[] = {8,7,6,5,4,3,2,1};
 #define InputPinMeasurement A1
 #define OutputPinMeasurement A2
 
 
 void setup() {
   Serial.begin(9600);                     
-  pinMode(FeedingVoltagePin,OUTPUT);                
   pinMode(InputPinMeasurement,INPUT);
   pinMode(OutputPinMeasurement,INPUT);                
 }
@@ -58,18 +57,39 @@ void DecodeDataChain() {
     int InVoltageArray[ArraysLenght], OutVoltageArray[ArraysLenght], ArraysIndex=0;
     unsigned long TimeArray[ArraysLenght];                                        //Array with time measurements
     
+    
+
+    //###DAC 8 bits converter DC signal
     String SignalType = parameters[2];                                            //Signal Type
-    #define MaxPWMVoltage 4.52                                                    //Maximun PWM Voltage
-    int InputVoltage = round((255/MaxPWMVoltage)*parameters[3].toFloat());        //PWM Voltage convertion to int numbers in range 0 to 255
+    #define MaxPWMVoltage 4.52                                                       //Maximun PWM Voltage
+    int InputVoltage = round((255/MaxPWMVoltage)*parameters[3].toFloat());        //Voltage convertion to int numbers in range 0 to 255
     Serial.println(SignalType);                                                 
     Serial.println(InputVoltage);
+    uint8_t BitsAmount = sizeof(InputVoltage)*8;
+    char InputVoltage_BitWord[BitsAmount+1];
+    itoa(InputVoltage,InputVoltage_BitWord,2);
+    Serial.println(InputVoltage_BitWord);
     
+    for (int j=0; j<8; j++){
+      if(InputVoltage_BitWord[j]-'0'==1){
+        pinMode(FeedingVoltagePin[j],OUTPUT);
+        digitalWrite(FeedingVoltagePin[j],HIGH);
+        Serial.print(FeedingVoltagePin[j]);Serial.println("high");
+      }
+      else{
+        pinMode(FeedingVoltagePin[j],OUTPUT);
+        digitalWrite(FeedingVoltagePin[j],LOW);
+        Serial.print(FeedingVoltagePin[j]);
+        Serial.println("low");
+      }
+    }    
+    Serial.println("########## ");
     InitialTime = micros();                                                       //Arduino board initial time
     CurrentTime = micros();                                                       //Arduino board current time
     TriggerTime = InitialTime;                                                    //Arduino board measurements start time
 
     do{
-      if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then measure and update TriggerTime
+      if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
         TriggerTime = CurrentTime;
         analogWrite(FeedingVoltagePin, InputVoltage);
         //take the measurement
@@ -100,5 +120,6 @@ void DecodeDataChain() {
     Serial.println(" ");
   }
 } 
+
 
  
