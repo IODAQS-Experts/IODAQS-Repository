@@ -5,7 +5,10 @@ const int FeedingVoltagePin[] = {8,7,6,5,4,3,2,1};
 
 
 void setup() {
-  Serial.begin(9600);                     
+  Serial.begin(9600);
+  for(int k=0; k<8; k++){
+    pinMode(FeedingVoltagePin[k],OUTPUT);
+  }
   pinMode(InputPinMeasurement,INPUT);
   pinMode(OutputPinMeasurement,INPUT);                
 }
@@ -70,14 +73,12 @@ void DecodeDataChain() {
     itoa(InputVoltage,InputVoltage_BitWord,2);
     Serial.println(InputVoltage_BitWord);
     
-    for (int j=0; j<8; j++){
+    for (int j=0; j<8; j++){                                                      //Set digital pins as outputs with their respective logic level
       if(InputVoltage_BitWord[j]-'0'==1){
-        pinMode(FeedingVoltagePin[j],OUTPUT);
         digitalWrite(FeedingVoltagePin[j],HIGH);
-        Serial.print(FeedingVoltagePin[j]);Serial.println("high");
+        Serial.println("high");
       }
       else{
-        pinMode(FeedingVoltagePin[j],OUTPUT);
         digitalWrite(FeedingVoltagePin[j],LOW);
         Serial.print(FeedingVoltagePin[j]);
         Serial.println("low");
@@ -91,7 +92,7 @@ void DecodeDataChain() {
     do{
       if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
         TriggerTime = CurrentTime;
-        analogWrite(FeedingVoltagePin, InputVoltage);
+        
         //take the measurement
         TimeArray[ArraysIndex]=micros();
         InVoltageArray[ArraysIndex]= analogRead(InputPinMeasurement);
