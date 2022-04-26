@@ -73,10 +73,10 @@ class IO_DAQS(Tab2Widgets):
             
             for key in prefix:
                 if self.SamplingPrefix.get()==key:
-                    self.SamplingTime=str(float(self.SampligCoefficient.get())*prefix.get(key))
+                    self.SamplingTime=str(round(float(self.SampligCoefficient.get())*prefix.get(key),6))
 
             #Time quantities must be greater than 0!      
-            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0001:
+            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0001 and float(self.MeasurementTime.get())>float(self.SamplingTime):
                 return self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),str(self.InputVoltage.get())
         except:
             pass      
@@ -100,7 +100,7 @@ class IO_DAQS(Tab2Widgets):
         try:
             self.arduino = serial.Serial()    #Open serial Port
             self.arduino.port = "com3"
-            self.arduino.baudrate = 9600
+            self.arduino.baudrate = 115200
             self.arduino.open()
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
@@ -114,11 +114,13 @@ class IO_DAQS(Tab2Widgets):
     def ReadDataFromArduino(self):
         try:
             reading = "Measurements started!"
-
-            while reading != "Measurements completed!":
+            self.readings = []
+            while reading != "Measurements completed!\r\n":
                 reading = self.arduino.readline().decode(encoding='ascii', errors='strict')
-                print(reading)
+                self.readings.append(reading)
             print("Task done")
+            for i in self.readings:
+                print(i)
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
         
