@@ -1,1 +1,0 @@
-self.ShowErrorMessage("Incorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*")
