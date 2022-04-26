@@ -29,7 +29,7 @@ class Tab2Widgets:
         self.RunButton= Button(self.Controls_LFrame, command=self.RunMeasurements, text="Ejecutar", anchor='c', font=('Arial Rounded MT Bold', 9))
         self.RunButton.grid(row=0, column=0, padx=25)
         
-        self.StopButton= Button(self.Controls_LFrame, text="Detener", anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.StopButton= Button(self.Controls_LFrame, command=self.StopMeasurements, text="Detener", anchor='c', font=('Arial Rounded MT Bold', 9))
         self.StopButton.grid(row=0, column=1,padx=8 )
 
         self.SaveButton= Button(self.Controls_LFrame, text="Guardar", anchor='c', font=('Arial Rounded MT Bold', 9))

@@ -11,34 +11,24 @@ import time
 
 try:
     arduino = serial.Serial("com3",9600)
-
-    def commands():
-        print("""*********************
-* 1 >> Turn on led *
-* 0 >> Turn off led  *
-* X >> Exit         *
-*********************
-        """)
-
+    num = 1
     while True:
-        commands()
-        choice = input("insert command: ").upper()
+        text = arduino.readline().decode('ascii', errors='strict')
+        if num ==1:
+            choice = input("insert command: ").upper()
+            arduino.write(choice.encode('ascii',errors='strict'))
+            if choice == "X":
+                print("Exiting Program")
+                arduino.close()
+                break 
+            num +=1
+        
+##        else:
+        ##time.sleep(1)   
 
-        if choice == "1":
-            print("led status: ON\n")
-            command = "," + choice
-            arduino.write(command.encode("ascii"))
-        elif choice == "0":
-            led=0
-            print("led status: OFF\n")
-            command = "," + choice
-            arduino.write(command.encode("ascii"))
-        elif choice == "X":
-            print("Exiting Program")
-            arduino.close()
-            break
-        else:
-            print("Invalid choice...try again\n")
+
+        print(text)
+        
 except:
     print("serial port couldn't be opened")        
 

@@ -63,6 +63,7 @@ class IO_DAQS(Tab2Widgets):
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     def RunMeasurements(self):
         self.SendDataToArduino(self.EvaluateDataType())
+        self.ReadDataFromArduino()
        
 
     def EvaluateDataType(self):
@@ -84,26 +85,46 @@ class IO_DAQS(Tab2Widgets):
         try:    
             self.DataChain = ",".join(parameters)   #makes a single string separated by the symbol inside ""
             print(self.DataChain)
+            
+            self.EvaluateConexion()
 
-            self.EvaluateConexion(self.DataChain)
+            print(self.arduino.readline().decode(encoding='ascii', errors='strict'))
+            self.arduino.write(self.DataChain.encode("ascii", errors='strict'))
+            print("Data Sent!!")
+            self.ReadDataFromArduino()
         except:
             self.ShowErrorMessage("Incorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*")
             
     
-    def EvaluateConexion(self, data):
+    def EvaluateConexion(self):
         try:
-            arduino = serial.Serial("com3",115200)    #Open serial Port
-            arduino.write(data.encode("ascii"))
+            self.arduino = serial.Serial()    #Open serial Port
+            self.arduino.port = "com3"
+            self.arduino.baudrate = 9600
+            self.arduino.open()
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
-        pass
+        
     
     def ShowErrorMessage(self, message):
         #The must appear a window showing the error, and the inputs must be set to default
         print("\n{}\n".format(message))   
 
 
+    def ReadDataFromArduino(self):
+        try:
+            reading = "Measurements started!"
+
+            while reading != "Measurements completed!":
+                reading = self.arduino.readline().decode(encoding='ascii', errors='strict')
+                print(reading)
+        except:
+            self.ShowErrorMessage("Arduino Connection Failed*")
+        
+
     def StopMeasurements(self):
+        "Serial Port Closed!!"
+        self.arduino.close()
         pass
 
 
