@@ -91,7 +91,7 @@ class IO_DAQS(Tab2Widgets):
             print(self.arduino.readline().decode(encoding='ascii', errors='strict'))
             self.arduino.write(self.DataChain.encode("ascii", errors='strict'))
             print("Data Sent!!")
-            self.ReadDataFromArduino()
+            
         except:
             self.ShowErrorMessage("Incorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*")
             
@@ -118,6 +118,7 @@ class IO_DAQS(Tab2Widgets):
             while reading != "Measurements completed!":
                 reading = self.arduino.readline().decode(encoding='ascii', errors='strict')
                 print(reading)
+            print("Task done")
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
         

@@ -1,5 +1,4 @@
 {
     "port": "COM3",
-    "board": "arduino:avr:uno",
-    "programmer": "arduino:avrispmkii"
+    "board": "arduino:avr:uno"
 }
