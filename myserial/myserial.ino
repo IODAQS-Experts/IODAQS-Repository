@@ -47,16 +47,16 @@ void DecodeDataChain(){
         //##### SECTION [Measuring and feeding the circuit]
     unsigned long InitialTime,CurrentTime,MeasurementTime,SamplingTime,TriggerTime;
     
-    MeasurementTime = parameters[0].toFloat()*1000000;                            //MeasurementTime in seconds conveerted in microseconds
-    SamplingTime = parameters[1].toFloat()*1000000;                               //SamplingTime in seconds converted in microseconds
-    int ArraysLenght = round(MeasurementTime/SamplingTime);                       //Lenght of all the measurements arrays
+    MeasurementTime = parameters[0].toFloat();  //parameters[0].toFloat()*1000000;                          //MeasurementTime in seconds conveerted in microseconds
+    SamplingTime = parameters[1].toFloat();     //parameters[1].toFloat()*1000000;     //SamplingTime in seconds converted in microseconds
+    int ArraysLenght = (int)(MeasurementTime/SamplingTime);          //round(MeasurementTime/SamplingTime);      //Lenght of all the measurements arrays
     
     int samples=0;
 
     //###DAC 8 bits converter DC signal
     String SignalType = parameters[2];                                            //Signal Type
     #define MaxPWMVoltage 4.52                                                    //Maximun PWM Voltage
-    int InputVoltage = round((255/MaxPWMVoltage)*parameters[3].toFloat());        //Voltage convertion to int numbers in range 0 to 255
+    int InputVoltage = parameters[3].toInt();  //round((255/MaxPWMVoltage)*parameters[3].toFloat());    //Voltage in binary numbers in range 0 to 255
     Serial.println(SignalType);                                                 
     Serial.println(InputVoltage);
     uint8_t BitsAmount = sizeof(InputVoltage)*8;
@@ -71,13 +71,10 @@ void DecodeDataChain(){
         pinMode(FeedingVoltagePin[j],OUTPUT);
         digitalWrite(FeedingVoltagePin[j],HIGH);
         delay(200);
-        //Serial.println("high");
       }
       else{
         pinMode(FeedingVoltagePin[j],OUTPUT);
         digitalWrite(FeedingVoltagePin[j],LOW);
-        Serial.print(FeedingVoltagePin[j]);
-        //Serial.println("low");
       }
     }
     Serial.println("########## ");
@@ -103,9 +100,9 @@ void DecodeDataChain(){
     Serial.println(dif);  
     Serial.println(samples);                                                      //Shows the amount of measurements done by each variable's array
                                                             
-    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
-      digitalWrite(FeedingVoltagePin[j],LOW);
-    }
+//    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
+//      digitalWrite(FeedingVoltagePin[j],LOW);
+//    }
 
     Serial.println("Measurements completed!");Serial.println(" ");
     }
