@@ -3,7 +3,7 @@
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("Puerto encendido");
   pinMode(InputPinMeasurement,INPUT);
   pinMode(OutputPinMeasurement,INPUT);
@@ -60,7 +60,7 @@ void DecodeDataChain(){
     Serial.println(SignalType);                                                 
     Serial.println(parameters[3]);
         
-    Serial.println(InputVoltage, BIN);   //shows: 11
+    Serial.println(InputVoltage, BIN);
     //------------------------------------
     const int FeedingVoltagePin[]={1,2,3,4,5,6,7,8};
     for(int i=7; i>=0; i--){
@@ -87,8 +87,8 @@ void DecodeDataChain(){
         TriggerTime = CurrentTime;
         
         //take the measurement  
-        Serial.print(analogRead(InputPinMeasurement)); Serial.print("  ");
-        Serial.print(analogRead(OutputPinMeasurement)); Serial.print("  ");
+        Serial.println(analogRead(InputPinMeasurement));
+        Serial.println(analogRead(OutputPinMeasurement));
         Serial.println(micros());
         
         samples = samples+1;
