@@ -91,14 +91,6 @@ class IO_DAQS(Tab2Widgets):
                 InputVoltage_decimal = math.trunc((255/MaxVoltage)*self.InputVoltage.get())
                 print(InputVoltage_decimal)
 
-                #Converts the integer number into a binary one of 8 digits
-                # Bare_Binary_Value =bin(InputVoltage_decimal)[2:]
-                # Bitword=list(Bare_Binary_Value)
-                # while len(Bitword)<8:
-                #     Bitword.insert(0,"0")
-                # InputVoltage= "".join(Bitword)
-                # print(InputVoltage)
-
                 return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputVoltage_decimal)
         except:
             pass      
