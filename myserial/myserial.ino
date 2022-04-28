@@ -47,35 +47,35 @@ void DecodeDataChain(){
         //##### SECTION [Measuring and feeding the circuit]
     unsigned long InitialTime,CurrentTime,MeasurementTime,SamplingTime,TriggerTime;
     
-    MeasurementTime = parameters[0].toFloat();  //parameters[0].toFloat()*1000000;                          //MeasurementTime in seconds conveerted in microseconds
-    SamplingTime = parameters[1].toFloat();     //parameters[1].toFloat()*1000000;     //SamplingTime in seconds converted in microseconds
-    int ArraysLenght = (int)(MeasurementTime/SamplingTime);          //round(MeasurementTime/SamplingTime);      //Lenght of all the measurements arrays
+    MeasurementTime = parameters[0].toFloat();                            //MeasurementTime in seconds conveerted in microseconds
+    SamplingTime = parameters[1].toFloat();                               //SamplingTime in seconds converted in microseconds
+    int ArraysLenght = (int)(MeasurementTime/SamplingTime);               //Lenght of all the measurements arrays
     
     int samples=0;
 
     //###DAC 8 bits converter DC signal
-    String SignalType = parameters[2];                                            //Signal Type
-    #define MaxPWMVoltage 4.52                                                    //Maximun PWM Voltage
-    int InputVoltage = parameters[3].toInt();  //round((255/MaxPWMVoltage)*parameters[3].toFloat());    //Voltage in binary numbers in range 0 to 255
+    String SignalType = parameters[2];                                    //Signal Type
+    #define MaxDACVoltage 4.52                                            //Maximun DAC's Feeding Voltage
+    byte InputVoltage = parameters[3].toInt();                            //Voltage in binary numbers in range 0 to 255
     Serial.println(SignalType);                                                 
-    Serial.println(InputVoltage);
-    uint8_t BitsAmount = sizeof(InputVoltage)*8;
-    char InputVoltage_BitWord[BitsAmount+1];
-    itoa(InputVoltage,InputVoltage_BitWord,2);
-    Serial.println(InputVoltage_BitWord);
-
-    
-    const int FeedingVoltagePin[]={8,7,6,5,4,3,2,1};       
-    for (int j=0; j<8; j++){                                                      //Set digital pins as outputs with their respective logic level
-      if(InputVoltage_BitWord[j]-'0'==1){
-        pinMode(FeedingVoltagePin[j],OUTPUT);
-        digitalWrite(FeedingVoltagePin[j],HIGH);
-        delay(200);
+    Serial.println(parameters[3]);
+        
+    Serial.println(InputVoltage, BIN);   //shows: 11
+    //------------------------------------
+    const int FeedingVoltagePin[]={1,2,3,4,5,6,7,8};
+    for(int i=7; i>=0; i--){
+      bool LogicState = bitRead(InputVoltage, i); 
+      Serial.print(LogicState, BIN);  //shows: 00000011
+      if(LogicState==1){
+          pinMode(FeedingVoltagePin[i]+1,OUTPUT);
+          digitalWrite(FeedingVoltagePin[i]+1,HIGH);
+          Serial.print(FeedingVoltagePin[i]+1);Serial.println("high");
       }
       else{
-        pinMode(FeedingVoltagePin[j],OUTPUT);
-        digitalWrite(FeedingVoltagePin[j],LOW);
-      }
+        pinMode((FeedingVoltagePin[i]+1),OUTPUT);
+        digitalWrite((FeedingVoltagePin[i]+1),LOW);
+        Serial.print(FeedingVoltagePin[i]+1);Serial.println("low");
+        }
     }
     Serial.println("########## ");
     InitialTime = micros();                                                       //Arduino board initial time
@@ -100,9 +100,9 @@ void DecodeDataChain(){
     Serial.println(dif);  
     Serial.println(samples);                                                      //Shows the amount of measurements done by each variable's array
                                                             
-//    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
-//      digitalWrite(FeedingVoltagePin[j],LOW);
-//    }
+    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
+      digitalWrite(FeedingVoltagePin[j],LOW);
+    }
 
     Serial.println("Measurements completed!");Serial.println(" ");
     }
