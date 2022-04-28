@@ -80,14 +80,14 @@ class IO_DAQS(Tab2Widgets):
                     self.SamplingTime=str(round(float(self.SampligCoefficient.get())*prefix.get(key),6))
 
             #Time quantities (in seconds) must be greater than 0!      
-            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0001 and float(self.MeasurementTime.get())>float(self.SamplingTime):
+            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0018 and float(self.MeasurementTime.get())>float(self.SamplingTime):
                 
                 #Converting times to microseconds:
                 MeasurementTime = float(self.MeasurementTime.get())*1000000
                 SamplingTime = float(self.SamplingTime)*1000000
 
                 #InputVoltage convertion to a 0-255 value (for ditial pins)
-                MaxVoltage = 4.52
+                MaxVoltage = 5
                 InputVoltage_decimal = math.trunc((255/MaxVoltage)*self.InputVoltage.get())
                 print(InputVoltage_decimal)
 
