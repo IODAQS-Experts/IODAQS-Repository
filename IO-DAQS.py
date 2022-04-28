@@ -114,7 +114,7 @@ class IO_DAQS(Tab2Widgets):
         try:
             self.arduino = serial.Serial()    #Open serial Port
             self.arduino.port = "com3"
-            self.arduino.baudrate = 9600
+            self.arduino.baudrate = 115200
             self.arduino.open()
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
