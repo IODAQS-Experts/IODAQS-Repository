@@ -40,7 +40,7 @@ class Tab2Widgets:
 
     def CreateComboboxes(self):
         #-------Comboboxes in SamplingTime Label Frame----------#
-        self.SamplingPrefix = ttk.Combobox(self.SamplingTime_LFrame,width=3, value=['ks','ms','us'])
+        self.SamplingPrefix = ttk.Combobox(self.SamplingTime_LFrame,width=3, value=['ks','s','ms','us'])
         self.SamplingPrefix.set('s')
         self.SamplingPrefix.grid(row=0, column=2)  
 

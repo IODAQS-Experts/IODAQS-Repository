@@ -30,7 +30,7 @@ void DecodeDataChain(){
     SubstringLastPosition = DataChain.indexOf(SeparatorCharacter,SubstringInitialPosition);  //last character's position of the first substring
       
     ArrayIndex = 0;                                                                   
-    while (SubstringLastPosition!=-1) {                                                      //while las comma's position is different from the end of DataChain, keep decoding
+    while (SubstringLastPosition!=-1) {                                                      //while last comma's position is different from the end of DataChain, keep decoding
       Serial.print(ArrayIndex);
       element = DataChain.substring(SubstringInitialPosition,  SubstringLastPosition); 
       parameters[ArrayIndex]= element;
@@ -47,39 +47,35 @@ void DecodeDataChain(){
         //##### SECTION [Measuring and feeding the circuit]
     unsigned long InitialTime,CurrentTime,MeasurementTime,SamplingTime,TriggerTime;
     
-    MeasurementTime = parameters[0].toFloat()*1000000;                            //MeasurementTime in seconds conveerted in microseconds
-    SamplingTime = parameters[1].toFloat()*1000000;                               //SamplingTime in seconds converted in microseconds
-    int ArraysLenght = round(MeasurementTime/SamplingTime);                       //Lenght of all the measurements arrays
+    MeasurementTime = parameters[0].toFloat();                            //MeasurementTime in seconds conveerted in microseconds
+    SamplingTime = parameters[1].toFloat();                               //SamplingTime in seconds converted in microseconds
+    int ArraysLenght = (int)(MeasurementTime/SamplingTime);               //Lenght of all the measurements arrays
     
-    int InVoltageArray[ArraysLenght], OutVoltageArray[ArraysLenght], ArraysIndex=0;
-    unsigned long TimeArray[ArraysLenght];                                        //Array with time measurements
+    int samples=0;
 
     //###DAC 8 bits converter DC signal
-    String SignalType = parameters[2];                                            //Signal Type
-    #define MaxPWMVoltage 4.52                                                       //Maximun PWM Voltage
-    int InputVoltage = round((255/MaxPWMVoltage)*parameters[3].toFloat());        //Voltage convertion to int numbers in range 0 to 255
+    String SignalType = parameters[2];                                    //Signal Type
+    #define MaxDACVoltage 4.52                                            //Maximun DAC's Feeding Voltage
+    byte InputVoltage = parameters[3].toInt();                            //Voltage in binary numbers in range 0 to 255
     Serial.println(SignalType);                                                 
-    Serial.println(InputVoltage);
-    uint8_t BitsAmount = sizeof(InputVoltage)*8;
-    char InputVoltage_BitWord[BitsAmount+1];
-    itoa(InputVoltage,InputVoltage_BitWord,2);
-    Serial.println(InputVoltage_BitWord);
-
-    
-    const int FeedingVoltagePin[]={8,7,6,5,4,3,2,1};       //en lugar de usar un array, se usa el indice del bucle
-    for (int j=0; j<8; j++){                                                      //Set digital pins as outputs with their respective logic level
-      if(InputVoltage_BitWord[j]-'0'==1){
-        pinMode(FeedingVoltagePin[j],OUTPUT);
-        digitalWrite(FeedingVoltagePin[j],HIGH);
-        delay(200);
-        //Serial.println("high");
+    Serial.println(parameters[3]);
+        
+    Serial.println(InputVoltage, BIN);
+    //------------------------------------
+    const int FeedingVoltagePin[]={1,2,3,4,5,6,7,8};
+    for(int i=7; i>=0; i--){
+      bool LogicState = bitRead(InputVoltage, i); 
+      Serial.print(LogicState, BIN);  //shows: 00000011
+      if(LogicState==1){
+          pinMode(FeedingVoltagePin[i]+1,OUTPUT);
+          digitalWrite(FeedingVoltagePin[i]+1,HIGH);
+          Serial.print(FeedingVoltagePin[i]+1);Serial.println("high");
       }
       else{
-        pinMode(FeedingVoltagePin[j],OUTPUT);
-        digitalWrite(FeedingVoltagePin[j],LOW);
-        Serial.print(FeedingVoltagePin[j]);
-        //Serial.println("low");
-      }
+        pinMode((FeedingVoltagePin[i]+1),OUTPUT);
+        digitalWrite((FeedingVoltagePin[i]+1),LOW);
+        Serial.print(FeedingVoltagePin[i]+1);Serial.println("low");
+        }
     }
     Serial.println("########## ");
     InitialTime = micros();                                                       //Arduino board initial time
@@ -90,34 +86,24 @@ void DecodeDataChain(){
       if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
         TriggerTime = CurrentTime;
         
-        //take the measurement
-        TimeArray[ArraysIndex]=micros();
-        InVoltageArray[ArraysIndex]= analogRead(InputPinMeasurement);
-        OutVoltageArray[ArraysIndex]=analogRead(OutputPinMeasurement);
-        ArraysIndex = ArraysIndex+1;
+        //take the measurement  
+        Serial.println(analogRead(InputPinMeasurement));
+        Serial.println(analogRead(OutputPinMeasurement));
+        Serial.println(micros());
+        
+        samples = samples+1;
       }
       CurrentTime = micros();
     }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));        //While MeasurementTime hasn't elapsed yet, keep up measuring
          
     unsigned long dif = CurrentTime-(InitialTime+SamplingTime);                   //Shows the "real" MeasurementTime
     Serial.println(dif);  
-    Serial.println(ArraysIndex);                                                  //Shows the amount of measurements done by each variable's array
-    Serial.println("#########");
-    //hasta aqui funciona bien
-        int cycles=0;
-//    unsigned long MeasuredDataArray[ArraysLenght][3];
-    for(int i=0;i< ArraysLenght;i++){                                           //Joins the individual arrays into a single one
-//        MeasuredDataArray[i][0] = (unsigned long)InVoltageArray[i];   
-//        MeasuredDataArray[i][1] = (unsigned long)OutVoltageArray[i];
-//        MeasuredDataArray[i][2] = TimeArray[i];
-
-        Serial.print(InVoltageArray[i]); Serial.print("  ");
-        Serial.print(OutVoltageArray[i]); Serial.print("  ");
-        Serial.println(TimeArray[i]);
-        //Serial.println(MeasuredDataArray[i][2]);
-        cycles++;                                                                 //Shows the amount of measurements done by each variable in the matrix
+    Serial.println(samples);                                                      //Shows the amount of measurements done by each variable's array
+                                                            
+    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
+      digitalWrite(FeedingVoltagePin[j],LOW);
     }
-    Serial.println(cycles);
+
     Serial.println("Measurements completed!");Serial.println(" ");
     }
     

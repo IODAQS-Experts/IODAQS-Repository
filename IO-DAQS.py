@@ -8,6 +8,7 @@ from WorkingArea import Tab2Widgets
 import time
 import os
 import serial
+import math
 
 class IO_DAQS(Tab2Widgets):
     def __init__(self, Window):
@@ -68,6 +69,9 @@ class IO_DAQS(Tab2Widgets):
 
     def EvaluateDataType(self):
         try:
+            ##Data##Conditioning##Section####Data##Conditioning##Section##
+            ##Data##Conditioning##Section####Data##Conditioning##Section##
+
             #Sampling-time-prefix adecuation
             prefix={'s':1,'ks':1000,'ms':.001,'us':.000001}
             
@@ -75,9 +79,19 @@ class IO_DAQS(Tab2Widgets):
                 if self.SamplingPrefix.get()==key:
                     self.SamplingTime=str(round(float(self.SampligCoefficient.get())*prefix.get(key),6))
 
-            #Time quantities must be greater than 0!      
-            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0001 and float(self.MeasurementTime.get())>float(self.SamplingTime):
-                return self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),str(self.InputVoltage.get())
+            #Time quantities (in seconds) must be greater than 0!      
+            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0018 and float(self.MeasurementTime.get())>float(self.SamplingTime):
+                
+                #Converting times to microseconds:
+                MeasurementTime = float(self.MeasurementTime.get())*1000000
+                SamplingTime = float(self.SamplingTime)*1000000
+
+                #InputVoltage convertion to a 0-255 value (for ditial pins)
+                MaxVoltage = 5
+                InputVoltage_decimal = math.trunc((255/MaxVoltage)*self.InputVoltage.get())
+                print(InputVoltage_decimal)
+
+                return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputVoltage_decimal)
         except:
             pass      
 
