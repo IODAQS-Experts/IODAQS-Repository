@@ -9,6 +9,9 @@ import time
 import os
 import serial
 import math
+from tkinter.filedialog import asksaveasfile
+import numpy 
+from datetime import datetime
 
 class IO_DAQS(Tab2Widgets):
     def __init__(self, Window):
@@ -87,8 +90,8 @@ class IO_DAQS(Tab2Widgets):
                 SamplingTime = float(self.SamplingTime)*1000000
 
                 #InputVoltage convertion to a 0-255 value (for ditial pins)
-                MaxVoltage = 5
-                InputVoltage_decimal = math.trunc((255/MaxVoltage)*self.InputVoltage.get())
+                self.MaxVoltage = 5
+                InputVoltage_decimal = math.trunc((255/self.MaxVoltage)*self.InputVoltage.get())
                 print(InputVoltage_decimal)
 
                 return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputVoltage_decimal)
@@ -104,7 +107,7 @@ class IO_DAQS(Tab2Widgets):
 
             print(self.arduino.readline().decode(encoding='ascii', errors='strict'))
             self.arduino.write(self.DataChain.encode("ascii", errors='strict'))
-            print("Data Sent!!")
+            
             
         except:
             self.ShowErrorMessage("Incorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*")
@@ -129,12 +132,13 @@ class IO_DAQS(Tab2Widgets):
         try:
             reading = "Measurements started!"
             self.readings = []
+
             while reading != "Measurements completed!\r\n":
                 reading = self.arduino.readline().decode(encoding='ascii', errors='strict')
-                self.readings.append(reading)
-            print("Task done")
+                self.readings.append(reading) 
+
             for i in self.readings:
-                print(i)
+                print(i[:-2])
         except:
             self.ShowErrorMessage("Arduino Connection Failed*")
         
@@ -146,7 +150,65 @@ class IO_DAQS(Tab2Widgets):
 
 
     def SaveMeasurements(self):
+        self.Create_ReadMeasurementsArrays()
+
+
+        files = [('All Files', '*.*'), 
+             ('Comma Separated Values Document', '*.cvs'),
+             ('Excel Document','.xls'),
+             ('Text Document', '*.txt')]
+        file = asksaveasfile(filetypes = files, defaultextension = files)
+        if file:
+            file.write("""Date: {0}
+Measuring time (s): {1}
+Sampling time (s): {2}
+Signal Type: {3}
+Input voltage (V): {4} 
+""".format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InputVoltage.get()))
+
+            file.write("\nInput Voltage array: \n\n")
+            numpy.savetxt(file,self.InputVoltageArray)
+            # for i in self.InputVoltageArray:
+            #     numpy.savetxt(file,i)
+                
+
+            file.write("\nOutput Voltage array: \n\n")
+            numpy.savetxt(file,self.OutputVoltageArray)
+            # for k in self.OutputVoltageArray:
+            #     numpy.savetxt(file,k)
+
+            file.write("\nTime array: \n\n")
+            numpy.savetxt(file,self.TimeArray)
+            # for j in self.TimeArray:
+            #     numpy.savetxt(file,j)
+
+            file.close()
         pass
+
+    def Create_ReadMeasurementsArrays(self):
+        #Organizing info in lists:
+        self.InputVoltageList = []
+        self.OutputVoltageList = []
+        self.TimeList =[]
+        for index in range(2,(len(self.readings)-1),3):             
+            #The last data is always time so the index is referenced to each datatime indexes' position (because of how readline() works)
+            #time in seconds
+            self.TimeList.append(float(self.readings[index][:-2])/1000000)   
+            #Voltages conversion*
+            self.OutputVoltageList.append(self.MaxVoltage*(float(self.readings[index-1][:-2])/1023))  
+            self.InputVoltageList.append(self.MaxVoltage*(float(self.readings[index-2][:-2])/1023))   
+        
+        # Arrays are transformed into arrays:
+        self.InputVoltageArray = numpy.array(self.InputVoltageList)
+        self.OutputVoltageArray = numpy.array(self.OutputVoltageList)
+        self.TimeArray = numpy.array(self.TimeList)
+
+        print(self.TimeArray, type(self.TimeArray))
+        print(self.InputVoltageArray,type(self.InputVoltageArray))
+        print(self.OutputVoltageArray,type(self.OutputVoltageArray))
+        pass
+
+
 
 
 if __name__ == '__main__':

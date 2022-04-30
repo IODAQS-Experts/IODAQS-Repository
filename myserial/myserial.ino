@@ -1,12 +1,14 @@
 #define InputPinMeasurement A1
 #define OutputPinMeasurement A2
-
+const int FeedingVoltagePin[]={2,3,4,5,6,7,8,9};
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println("Puerto encendido");
   pinMode(InputPinMeasurement,INPUT);
   pinMode(OutputPinMeasurement,INPUT);
+  for(int j=0;j<8;j++){
+    pinMode(FeedingVoltagePin[j],OUTPUT);
+  }
 
 }
 
@@ -17,21 +19,20 @@ void loop() {
 void DecodeDataChain(){
     if(Serial.available()){
     
-    Serial.println("Serial Port Open");
+    //Serial.println("Serial Port Open");
     #define ArraySize 4
     String parameters[ArraySize],DataChain, element;
     #define SeparatorCharacter ","
     int SubstringInitialPosition, SubstringLastPosition, ArrayIndex;
     
     DataChain = Serial.readString();                                                         //if something in Serial Port, save it in a variable
-    Serial.println(DataChain);                                                               //print the string in serial monitor
     delay(1000);
     SubstringInitialPosition=0;                                                              //first character's position of the first substring
     SubstringLastPosition = DataChain.indexOf(SeparatorCharacter,SubstringInitialPosition);  //last character's position of the first substring
       
     ArrayIndex = 0;                                                                   
     while (SubstringLastPosition!=-1) {                                                      //while last comma's position is different from the end of DataChain, keep decoding
-      Serial.print(ArrayIndex);
+      //Serial.print(ArrayIndex);
       element = DataChain.substring(SubstringInitialPosition,  SubstringLastPosition); 
       parameters[ArrayIndex]= element;
     
@@ -39,8 +40,8 @@ void DecodeDataChain(){
       SubstringLastPosition = DataChain.indexOf(SeparatorCharacter, SubstringInitialPosition);
       ArrayIndex =ArrayIndex+1;
     }
-    Serial.println(ArrayIndex);
-    Serial.println(" ");
+    //Serial.println(ArrayIndex);
+    //Serial.println(" ");
     element = DataChain.substring(SubstringInitialPosition, DataChain.length());
     parameters[ArraySize-1] = element;
 
@@ -55,29 +56,27 @@ void DecodeDataChain(){
 
     //###DAC 8 bits converter DC signal
     String SignalType = parameters[2];                                    //Signal Type
-    #define MaxDACVoltage 4.52                                            //Maximun DAC's Feeding Voltage
+  
     byte InputVoltage = parameters[3].toInt();                            //Voltage in binary numbers in range 0 to 255
-    Serial.println(SignalType);                                                 
-    Serial.println(parameters[3]);
+    //Serial.println(SignalType);                                                 
+    //Serial.println(parameters[3]);
         
-    Serial.println(InputVoltage, BIN);
+    //Serial.println(InputVoltage, BIN);
     //------------------------------------
-    const int FeedingVoltagePin[]={1,2,3,4,5,6,7,8};
+    
     for(int i=7; i>=0; i--){
       bool LogicState = bitRead(InputVoltage, i); 
-      Serial.print(LogicState, BIN);  //shows: 00000011
+      //Serial.print(LogicState, BIN);  //shows: 00000011
       if(LogicState==1){
-          pinMode(FeedingVoltagePin[i]+1,OUTPUT);
-          digitalWrite(FeedingVoltagePin[i]+1,HIGH);
-          Serial.print(FeedingVoltagePin[i]+1);Serial.println("high");
+          digitalWrite(FeedingVoltagePin[i],HIGH);
+          //Serial.print(FeedingVoltagePin[i]);Serial.println("high");
       }
       else{
-        pinMode((FeedingVoltagePin[i]+1),OUTPUT);
-        digitalWrite((FeedingVoltagePin[i]+1),LOW);
-        Serial.print(FeedingVoltagePin[i]+1);Serial.println("low");
+        digitalWrite((FeedingVoltagePin[i]),LOW);
+        //Serial.print(FeedingVoltagePin[i]);Serial.println("low");
         }
     }
-    Serial.println("########## ");
+    //Serial.println("########## ");
     InitialTime = micros();                                                       //Arduino board initial time
     CurrentTime = micros();                                                       //Arduino board current time
     TriggerTime = InitialTime;                                                    //Arduino board measurements start time
@@ -97,12 +96,12 @@ void DecodeDataChain(){
     }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));        //While MeasurementTime hasn't elapsed yet, keep up measuring
          
     unsigned long dif = CurrentTime-(InitialTime+SamplingTime);                   //Shows the "real" MeasurementTime
-    Serial.println(dif);  
-    Serial.println(samples);                                                      //Shows the amount of measurements done by each variable's array
+    //Serial.println(dif);  
+    //Serial.println(samples);                                                      //Shows the amount of measurements done 
                                                             
-    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
-      digitalWrite(FeedingVoltagePin[j],LOW);
-    }
+//    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
+//      digitalWrite(FeedingVoltagePin[j],LOW);
+//    }
 
     Serial.println("Measurements completed!");Serial.println(" ");
     }

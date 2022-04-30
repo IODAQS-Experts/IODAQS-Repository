@@ -24,6 +24,13 @@ tkinter labels: https://www.geeksforgeeks.org/python-tkinter-label/
 
 join method python: https://note.nkmk.me/en/python-string-concat/#:~:text=The%20string%20method%20join(),strings%20into%20a%20single%20string.&text=Call%20join()%20method%20from,makes%20a%20comma%2Ddelimited%20string.
 
+tkinter save files: https://www.geeksforgeeks.org/python-asksaveasfile-function-in-tkinter/
+write content into a file: https://stackoverflow.com/questions/31215802/how-do-i-write-to-the-file-i-selected-using-filedialog-asksaveasfile
+
+Numpy documentation: https://numpy.org/doc/stable/reference/generated/numpy.savetxt.html
+
+datatime documentation: https://www.geeksforgeeks.org/get-current-date-using-python/
+
 Git Commands: https://dzone.com/articles/top-20-git-commands-with-examples
               https://education.github.com/git-cheat-sheet-education.pdf
               https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html
