@@ -93,7 +93,7 @@ class Tab2Widgets:
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.Controls_LFrame.grid(row=3, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
-        self.MatplotlibGraph_LFrame = LabelFrame(ParentFrame, width=400, height= 400, text="Datos Leídos: ", 
+        self.MatplotlibGraph_LFrame = LabelFrame(ParentFrame, width=400, height= 400, text="Comparación Voltaje de Entrada vs Salida: ", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.MatplotlibGraph_LFrame.grid(row=1, column=1, padx = 40, pady=15, ipadx=20,ipady=5)
 
@@ -126,10 +126,14 @@ class Tab2Widgets:
 
     def CreateSpinBox(self,ParentFrame):
         #-------SpinBoxes in MeasurementTime Label Frame-------#
-        self.MeasurementTime = Spinbox(ParentFrame,width=7, from_=0.0, to=1800.0)
+        self.measurementString = StringVar()
+        self.measurementString.set("1")
+        self.MeasurementTime = Spinbox(ParentFrame,width=7, from_=0.0, to=1800.0, textvariable= self.measurementString)
         self.MeasurementTime.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 
         #-------SpinBoxes in SamplingTime Label Frame----------#
-        self.SampligCoefficient = Spinbox(self.SamplingTime_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0)
+        self.samplingString = StringVar()
+        self.samplingString.set("1")
+        self.SampligCoefficient = Spinbox(self.SamplingTime_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0, textvariable=self.samplingString)
         self.SampligCoefficient.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 

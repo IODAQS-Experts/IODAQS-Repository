@@ -4,6 +4,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import Tk
+from tkinter import messagebox
 from WorkingArea import Tab2Widgets    
 import time
 import os
@@ -117,8 +118,9 @@ class IO_DAQS(Tab2Widgets):
             
             
         except:
-            self.ShowErrorMessage("Incorrect Data Type, invalid 'Tiempo de medicion' or 'muestreo'*")
-            
+            self.ShowErrorMessage("Error de datos","Valores 'Tiempo de medicion' o 'muestreo incorrectos'*")
+            self.measurementString.set("0")
+            self.samplingString.set("0")
     
     def EvaluateConexion(self):
         try:
@@ -127,12 +129,12 @@ class IO_DAQS(Tab2Widgets):
             self.arduino.baudrate = 115200
             self.arduino.open()
         except:
-            self.ShowErrorMessage("Arduino Connection Failed*")
+           self.ShowErrorMessage("Fallo en Conexión","¡Falló la Conexión con Arduino!")
         
     
-    def ShowErrorMessage(self, message):
+    def ShowErrorMessage(self, message,title):
         #The must appear a window showing the error, and the inputs must be set to default
-        print("\n{}\n".format(message))   
+        messagebox.showerror(message, title)  
 
 
     def ReadDataFromArduino(self):
@@ -146,8 +148,9 @@ class IO_DAQS(Tab2Widgets):
 
             for i in self.readings:
                 print(i[:-2])
+            messagebox.showinfo(message="Lectura Exitosa!", title="¡Datos leídos exitosamente!") 
         except:
-            self.ShowErrorMessage("Arduino Connection Failed*")
+            self.ShowErrorMessage( "Fallo en Conexión","¡Falló la Conexión con Arduino!")
         
 
     def StopMeasurements(self):
@@ -180,6 +183,7 @@ class IO_DAQS(Tab2Widgets):
                 file.write("\nTime array: \n\n")
                 numpy.savetxt(file,self.TimeArray)
 
+                messagebox.showinfo(message="Guardado Exitoso!", title="¡Datos guardados exitosamente!") 
                 file.close()
         
 
@@ -218,22 +222,15 @@ class IO_DAQS(Tab2Widgets):
             
             canvas._tkcanvas.pack(side=TOP, fill = BOTH, expand=False)
 
-            
             Graph.plot(self.TimeArray,self.InputVoltageArray, color='green',linestyle='solid', marker='o',markersize='8', label="V_in")
             Graph.plot(self.TimeArray,self.OutputVoltageArray, color='red',linestyle='solid', marker='x',markersize='8', label="V_out")
             
-            Graph.title('Comparación Voltaje de Entrada vs Salida')
             Graph.set_xlabel("Tiempo (s)")
             Graph.set_ylabel("Voltaje (V)")
             Graph.legend()  #lox='upper right', title='Leyenda'
             Graph.grid()
-            canvas.draw()
+            #canvas.draw()
             canvas.draw_idle()
-            
-           
-            
-            
-           
             
             print("graph created!")
 
