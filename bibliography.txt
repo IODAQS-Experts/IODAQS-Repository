@@ -31,6 +31,9 @@ Numpy documentation: https://numpy.org/doc/stable/reference/generated/numpy.save
 
 datatime documentation: https://www.geeksforgeeks.org/get-current-date-using-python/
 
+Matplotlib implementation: https://www.youtube.com/watch?v=Zw6M-BnAPP0&ab_channel=sentdex
+                           https://stackoverflow.com/questions/53155949/how-to-update-matplotlib-embedded-into-tkinter
+
 Git Commands: https://dzone.com/articles/top-20-git-commands-with-examples
               https://education.github.com/git-cheat-sheet-education.pdf
               https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html

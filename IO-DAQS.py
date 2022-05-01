@@ -13,11 +13,17 @@ from tkinter.filedialog import asksaveasfile
 import numpy 
 from datetime import datetime
 
+import matplotlib
+matplotlib.use("TkAgg")         #backend
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.figure import Figure
+
+
 class IO_DAQS(Tab2Widgets):
     def __init__(self, Window):
         super().__init__()
         self.MainWindow = Window
-        self.MainWindow_Width="650"
+        self.MainWindow_Width="1050"
         self.MainWindow_Height="650"
         self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
         self.Title="Interfaz Python-Arduino"
@@ -68,7 +74,8 @@ class IO_DAQS(Tab2Widgets):
     def RunMeasurements(self):
         self.SendDataToArduino(self.EvaluateDataType())
         self.ReadDataFromArduino()
-       
+        self.Create_ReadMeasurementsArrays()
+        self.CreateDataGraph()
 
     def EvaluateDataType(self):
         try:
@@ -150,40 +157,31 @@ class IO_DAQS(Tab2Widgets):
 
 
     def SaveMeasurements(self):
-        self.Create_ReadMeasurementsArrays()
+        if len( self.InputVoltageArray) != 0:
+            files = [('All Files', '*.*'), 
+                ('Comma Separated Values Document', '*.cvs'),
+                ('Excel Document','.xls'),
+                ('Text Document', '*.txt')]
+            file = asksaveasfile(filetypes = files, defaultextension = files)
+            if file:
+                file.write("""Date: {0}
+    Measuring time (s): {1}
+    Sampling time (s): {2}
+    Signal Type: {3}
+    Input voltage (V): {4} 
+    """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InputVoltage.get()))
 
-
-        files = [('All Files', '*.*'), 
-             ('Comma Separated Values Document', '*.cvs'),
-             ('Excel Document','.xls'),
-             ('Text Document', '*.txt')]
-        file = asksaveasfile(filetypes = files, defaultextension = files)
-        if file:
-            file.write("""Date: {0}
-Measuring time (s): {1}
-Sampling time (s): {2}
-Signal Type: {3}
-Input voltage (V): {4} 
-""".format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InputVoltage.get()))
-
-            file.write("\nInput Voltage array: \n\n")
-            numpy.savetxt(file,self.InputVoltageArray)
-            # for i in self.InputVoltageArray:
-            #     numpy.savetxt(file,i)
+                file.write("\nInput Voltage array: \n\n")
+                numpy.savetxt(file,self.InputVoltageArray)
                 
+                file.write("\nOutput Voltage array: \n\n")
+                numpy.savetxt(file,self.OutputVoltageArray)
 
-            file.write("\nOutput Voltage array: \n\n")
-            numpy.savetxt(file,self.OutputVoltageArray)
-            # for k in self.OutputVoltageArray:
-            #     numpy.savetxt(file,k)
+                file.write("\nTime array: \n\n")
+                numpy.savetxt(file,self.TimeArray)
 
-            file.write("\nTime array: \n\n")
-            numpy.savetxt(file,self.TimeArray)
-            # for j in self.TimeArray:
-            #     numpy.savetxt(file,j)
-
-            file.close()
-        pass
+                file.close()
+        
 
     def Create_ReadMeasurementsArrays(self):
         #Organizing info in lists:
@@ -206,9 +204,38 @@ Input voltage (V): {4}
         print(self.TimeArray, type(self.TimeArray))
         print(self.InputVoltageArray,type(self.InputVoltageArray))
         print(self.OutputVoltageArray,type(self.OutputVoltageArray))
-        pass
 
+    def CreateDataGraph(self):
+        if len( self.InputVoltageArray) != 0:
+            GraphFigure = Figure(figsize=(5,4),dpi=100,edgecolor='black')
+            Graph = GraphFigure.add_subplot(111)
+            
+            #canvas._tkcanvas.destroy()
+            canvas = FigureCanvasTkAgg(GraphFigure, self.MatplotlibGraph_LFrame)
+            canvas.get_tk_widget().pack(side=TOP, fill = BOTH, expand=False)
+            toolbar = NavigationToolbar2Tk(canvas, self.MatplotlibGraph_LFrame)
+            toolbar.update()
+            
+            canvas._tkcanvas.pack(side=TOP, fill = BOTH, expand=False)
 
+            
+            Graph.plot(self.TimeArray,self.InputVoltageArray, color='green',linestyle='solid', marker='o',markersize='8', label="V_in")
+            Graph.plot(self.TimeArray,self.OutputVoltageArray, color='red',linestyle='solid', marker='x',markersize='8', label="V_out")
+            
+            Graph.title('Comparación Voltaje de Entrada vs Salida')
+            Graph.set_xlabel("Tiempo (s)")
+            Graph.set_ylabel("Voltaje (V)")
+            Graph.legend()  #lox='upper right', title='Leyenda'
+            Graph.grid()
+            canvas.draw()
+            canvas.draw_idle()
+            
+           
+            
+            
+           
+            
+            print("graph created!")
 
 
 if __name__ == '__main__':

@@ -50,6 +50,8 @@ class Tab2Widgets:
         self.FrameTab2 = ttk.Frame(ParentName, width='1200', height='600')
         self.FrameTab2.grid(row=1,column=0)
 
+        self.ConfigurationsFrame = ttk.Frame(self.FrameTab2, width='1200', height='600')
+        self.ConfigurationsFrame.grid(row=1,column=0)
 
 
     def CreateLabels(self,ParentFrame):
@@ -74,23 +76,26 @@ class Tab2Widgets:
         self.SignalTypeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5, columnspan=2)
 
 
-
     def CreateLabelFrames(self,ParentFrame):
-        self.MeasurementTime_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Tiempo de Medición", 
+        self.MeasurementTime_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Tiempo de Medición", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.MeasurementTime_LFrame.grid(row=1, column=0, padx = 40, pady=15, ipadx=20,ipady=1)
+        self.MeasurementTime_LFrame.grid(row=0, column=0, padx = 40, pady=15, ipadx=20,ipady=1)
 
-        self.SamplingTime_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Razón de Muestreo", 
+        self.SamplingTime_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Razón de Muestreo", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.SamplingTime_LFrame.grid(row=2, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
+        self.SamplingTime_LFrame.grid(row=1, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
-        self.Signal_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Careacterísticas de señal", 
+        self.Signal_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Careacterísticas de señal", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.Signal_LFrame.grid(row=3, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
+        self.Signal_LFrame.grid(row=2, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
-        self.Controls_LFrame = LabelFrame(ParentFrame, width=300, height= 200, text="Controles de Operación", 
+        self.Controls_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Controles de Operación", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
-        self.Controls_LFrame.grid(row=4, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
+        self.Controls_LFrame.grid(row=3, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
+
+        self.MatplotlibGraph_LFrame = LabelFrame(ParentFrame, width=400, height= 400, text="Datos Leídos: ", 
+        font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
+        self.MatplotlibGraph_LFrame.grid(row=1, column=1, padx = 40, pady=15, ipadx=20,ipady=5)
 
 
 
