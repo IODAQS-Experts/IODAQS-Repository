@@ -85,7 +85,7 @@ class Tab2Widgets:
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.SamplingTime_LFrame.grid(row=1, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
-        self.Signal_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Careacterísticas de señal", 
+        self.Signal_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Careacterísticas de Señal", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.Signal_LFrame.grid(row=2, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
@@ -93,7 +93,7 @@ class Tab2Widgets:
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.Controls_LFrame.grid(row=3, column=0, padx = 40, pady=15, ipadx=20,ipady=5)
 
-        self.MatplotlibGraph_LFrame = LabelFrame(ParentFrame, width=400, height= 400, text="Comparación Voltaje de Entrada vs Salida: ", 
+        self.MatplotlibGraph_LFrame = LabelFrame(ParentFrame, width=400, height= 400, text="Datos Leídos: ", 
         font=('Arial Rounded MT Bold', 10), labelanchor= "n", relief="solid")
         self.MatplotlibGraph_LFrame.grid(row=1, column=1, padx = 40, pady=15, ipadx=20,ipady=5)
 
@@ -119,7 +119,7 @@ class Tab2Widgets:
 
 
     def CreateSliders(self):
-        self.InputVoltage = Scale(self.Signal_LFrame, from_=0, to=4.52, orient='horizontal', resolution=.01, label='Voltaje')
+        self.InputVoltage = Scale(self.Signal_LFrame, from_=0, to=5, orient='horizontal', resolution=.01, label='Voltaje')
         self.InputVoltage.grid(row=3, column=0, columnspan=2)
 
 

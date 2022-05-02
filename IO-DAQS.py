@@ -31,6 +31,22 @@ class IO_DAQS(Tab2Widgets):
 
         self.CreateWidgets()
 
+        #Graph settings:
+        self.GraphFigure = Figure(figsize=(5,4.5),dpi=100,edgecolor='black')
+        self.Graph = self.GraphFigure.add_subplot(111)
+            
+            #canvas._tkcanvas.destroy()
+        self.canvas = FigureCanvasTkAgg(self.GraphFigure, self.MatplotlibGraph_LFrame)
+        self.canvas.get_tk_widget().pack(side=TOP, fill = BOTH, expand=False)
+        toolbar = NavigationToolbar2Tk(self.canvas, self.MatplotlibGraph_LFrame)
+        toolbar.update()
+        self.canvas._tkcanvas.pack(side=TOP, fill = BOTH, expand=False)
+        self.SetGraphProperties()
+
+        #self.Graph.spines['left'].set_color('red')        # setting up Y-axis tick color to red
+        #self.Graph.spines['top'].set_color('red')
+        #canvas.draw()       
+
     def CreateWidgets(self):
         self.CreateNotebook()
         self.AddTabs_Notebook()
@@ -76,7 +92,7 @@ class IO_DAQS(Tab2Widgets):
         self.SendDataToArduino(self.EvaluateDataType())
         self.ReadDataFromArduino()
         self.Create_ReadMeasurementsArrays()
-        self.CreateDataGraph()
+        self.PlotData()
 
     def EvaluateDataType(self):
         try:
@@ -209,31 +225,36 @@ class IO_DAQS(Tab2Widgets):
         print(self.InputVoltageArray,type(self.InputVoltageArray))
         print(self.OutputVoltageArray,type(self.OutputVoltageArray))
 
-    def CreateDataGraph(self):
+    def PlotData(self):
         if len( self.InputVoltageArray) != 0:
-            GraphFigure = Figure(figsize=(5,4),dpi=100,edgecolor='black')
-            Graph = GraphFigure.add_subplot(111)
-            
-            #canvas._tkcanvas.destroy()
-            canvas = FigureCanvasTkAgg(GraphFigure, self.MatplotlibGraph_LFrame)
-            canvas.get_tk_widget().pack(side=TOP, fill = BOTH, expand=False)
-            toolbar = NavigationToolbar2Tk(canvas, self.MatplotlibGraph_LFrame)
-            toolbar.update()
-            
-            canvas._tkcanvas.pack(side=TOP, fill = BOTH, expand=False)
 
-            Graph.plot(self.TimeArray,self.InputVoltageArray, color='green',linestyle='solid', marker='o',markersize='8', label="V_in")
-            Graph.plot(self.TimeArray,self.OutputVoltageArray, color='red',linestyle='solid', marker='x',markersize='8', label="V_out")
-            
-            Graph.set_xlabel("Tiempo (s)")
-            Graph.set_ylabel("Voltaje (V)")
-            Graph.legend()  #lox='upper right', title='Leyenda'
-            Graph.grid()
-            #canvas.draw()
-            canvas.draw_idle()
-            
+            self.Graph.clear()
+            self.Graph.plot(self.TimeArray,self.InputVoltageArray, color='#A5F4FA',linestyle='solid', marker='o',markersize='4', label="V_in")
+            self.Graph.plot(self.TimeArray,self.OutputVoltageArray, color='#E3FA98',linestyle='solid', marker='x',markersize='4', label="V_out")
+            self.canvas.draw_idle()
+            self.SetGraphProperties()
             print("graph created!")
-
+    
+    
+    def SetGraphProperties(self):
+        font = {'family': 'Arial Rounded MT Bold',
+        'color':  'white',
+        'weight': 'normal',
+        'size': 12,
+        }
+        self.Graph.set_title('Comparación Voltaje de Entrada vs Salida', fontdict = font)
+        self.Graph.grid(color='#667B84')
+        self.Graph.set_xlabel("Tiempo (s)",fontdict = font)
+        self.Graph.set_ylabel("Voltaje (V)",fontdict = font)
+        self.Graph.legend()  
+        self.Graph.grid(color='#667B84')
+        self.GraphFigure.patch.set_facecolor('#465162')
+        self.Graph.xaxis.label.set_color('white')        #setting up X-axis label color 
+        self.Graph.yaxis.label.set_color('white')          #setting up Y-axis label color 
+        self.Graph.set_facecolor('#465162')           #Grah Background color
+        self.Graph.tick_params(axis='x', colors='#92C2E2',labelsize=10)    #setting up X-axis tick color to red
+        self.Graph.tick_params(axis='y', colors='#92C2E2',labelsize=10)  #setting up Y-axis tick color to black
+        pass
 
 if __name__ == '__main__':
     Window = Tk()
