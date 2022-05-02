@@ -33,6 +33,11 @@ datatime documentation: https://www.geeksforgeeks.org/get-current-date-using-pyt
 
 Matplotlib implementation: https://www.youtube.com/watch?v=Zw6M-BnAPP0&ab_channel=sentdex
                            https://stackoverflow.com/questions/53155949/how-to-update-matplotlib-embedded-into-tkinter
+                           https://pythonguides.com/matplotlib-tick-params/
+                           https://matplotlib.org/3.5.0/api/_as_gen/matplotlib.axes.Axes.set_xlabel.html
+                           https://matplotlib.org/3.5.0/tutorials/text/text_intro.html
+                           https://matplotlib.org/2.1.2/api/_as_gen/matplotlib.pyplot.plot.html
+                           https://stackoverflow.com/questions/14088687/how-to-change-plot-background-color
 
 Git Commands: https://dzone.com/articles/top-20-git-commands-with-examples
               https://education.github.com/git-cheat-sheet-education.pdf
