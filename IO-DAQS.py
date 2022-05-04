@@ -43,9 +43,6 @@ class IO_DAQS(Tab2Widgets):
         self.canvas._tkcanvas.pack(side=TOP, fill = BOTH, expand=False)
         self.SetGraphProperties()
 
-        #self.Graph.spines['left'].set_color('red')        # setting up Y-axis tick color to red
-        #self.Graph.spines['top'].set_color('red')
-        #canvas.draw()       
 
     def CreateWidgets(self):
         self.CreateNotebook()
@@ -84,7 +81,6 @@ class IO_DAQS(Tab2Widgets):
 
         self.Title3 = Label(self.FrameTab3, text = 'Welcome "About us"',padx=50,pady=20, font=('Arial Rounded MT Bold', 20))
         self.Title3.grid(row=0, column=0)
-    
     
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
@@ -147,11 +143,9 @@ class IO_DAQS(Tab2Widgets):
         except:
            self.ShowErrorMessage("Fallo en Conexión","¡Falló la Conexión con Arduino!")
         
-    
     def ShowErrorMessage(self, message,title):
         #The must appear a window showing the error, and the inputs must be set to default
         messagebox.showerror(message, title)  
-
 
     def ReadDataFromArduino(self):
         try:
@@ -168,12 +162,10 @@ class IO_DAQS(Tab2Widgets):
         except:
             self.ShowErrorMessage( "Fallo en Conexión","¡Falló la Conexión con Arduino!")
         
-
     def StopMeasurements(self):
         "Serial Port Closed!!"
         self.arduino.close()
         pass
-
 
     def SaveMeasurements(self):
         if len( self.InputVoltageArray) != 0:
@@ -202,7 +194,6 @@ class IO_DAQS(Tab2Widgets):
                 messagebox.showinfo(message="Guardado Exitoso!", title="¡Datos guardados exitosamente!") 
                 file.close()
         
-
     def Create_ReadMeasurementsArrays(self):
         #Organizing info in lists:
         self.InputVoltageList = []
@@ -234,8 +225,7 @@ class IO_DAQS(Tab2Widgets):
             self.canvas.draw_idle()
             self.SetGraphProperties()
             print("graph created!")
-    
-    
+        
     def SetGraphProperties(self):
         font = {'family': 'Arial Rounded MT Bold',
         'color':  'white',

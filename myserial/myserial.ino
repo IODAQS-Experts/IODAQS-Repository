@@ -99,9 +99,9 @@ void DecodeDataChain(){
     //Serial.println(dif);  
     //Serial.println(samples);                                                      //Shows the amount of measurements done 
                                                             
-//    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
-//      digitalWrite(FeedingVoltagePin[j],LOW);
-//    }
+    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
+      digitalWrite(FeedingVoltagePin[j],LOW);
+    }
 
     Serial.println("Measurements completed!");Serial.println(" ");
     }
