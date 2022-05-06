@@ -124,7 +124,7 @@ class IO_DAQS(Tab2Widgets):
                 if self.SignalType.get()=='step':
                     InputFinalVoltage_decimal=0
 
-                return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputInitialVoltage_decimal),str(InputFinalVoltage_decimal),str(Period)
+                return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputInitialVoltage_decimal)#,str(InputFinalVoltage_decimal),str(Period)
         except:
             pass      
 

@@ -44,7 +44,7 @@ void DecodeDataChain(){
     //Serial.println(" ");
     element = DataChain.substring(SubstringInitialPosition, DataChain.length());
     parameters[ArraySize-1] = element;
-
+    
         //##### SECTION [Measuring and feeding the circuit]
     unsigned long InitialTime,CurrentTime,MeasurementTime,SamplingTime,TriggerTime;
     MeasurementTime = parameters[0].toFloat();                           
@@ -54,50 +54,45 @@ void DecodeDataChain(){
     byte InputVoltage;
     long Dec_val;
     String SignalType = parameters[2];
-    int FinalV = parameters[3].toFloat();
-    int InitialV = parameters[4].toFloat();
+    int FinalV = parameters[4].toInt();
+    int InitialV = parameters[3].toInt();
     unsigned long Period = parameters[5].toInt();
     unsigned long FinalTime = MeasurementTime+SamplingTime;  
  
 
     //#########ASIGNACIÓN DE TIEMPOS#########                                                  
     float m =((float)(FinalV-InitialV)/((float)(FinalTime-InitialTime)));    //  (FinalV-InitialV)/(FinalTime-InitialTime)   
-    Serial.print(SignalType);Serial.print(" ");Serial.println(m);
+//    Serial.print(SignalType);Serial.print(" ");Serial.println(m);
 
     //#########EVALUAR SignalType###################3
-
-//    else (SignalType == "noise"){    
-//    }
-
 
     //#######STEP BUCLE#####################
     //#######STEP BUCLE#####################
     //#######STEP BUCLE#####################
     if((SignalType == "step")){
-      InputVoltage = FinalV;
+      InputVoltage = InitialV;
+      for(int i=7; i>=0; i--){
+        bool LogicState = bitRead(InputVoltage, i); 
+        //Serial.print(LogicState, BIN);  //shows: 00000011
+        if(LogicState==1){
+          digitalWrite(FeedingVoltagePin[i],HIGH);
+        }
+        else{
+          digitalWrite((FeedingVoltagePin[i]),LOW);
+        }
+      }
       InitialTime = micros();                                                      
       CurrentTime = micros();                                                      
       TriggerTime = InitialTime;
-        
+      
       do{
-        for(int i=7; i>=0; i--){
-          bool LogicState = bitRead(InputVoltage, i); 
-          //Serial.print(LogicState, BIN);  //shows: 00000011
-          if(LogicState==1){
-              digitalWrite(FeedingVoltagePin[i],HIGH);
-          }
-          else{
-            digitalWrite((FeedingVoltagePin[i]),LOW);
-            }
-      }
-      if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
-        TriggerTime = CurrentTime;
-        //take the measurement  
-        Serial.println(analogRead(InputPinMeasurement));
-        Serial.println(analogRead(OutputPinMeasurement));
-        Serial.println(micros());
-      } 
-        Serial.println(FinalV);
+        if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
+          TriggerTime = CurrentTime;
+          //take the measurement  
+          Serial.println(analogRead(InputPinMeasurement));
+          Serial.println(analogRead(OutputPinMeasurement));
+          Serial.println(micros());
+        }
   
         CurrentTime = micros();
       }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));
@@ -114,9 +109,8 @@ void DecodeDataChain(){
       TriggerTime = InitialTime;
         
       do{
-         Dec_val= round(m*(CurrentTime-InitialTime)+InitialV);
-         Serial.println(Dec_val);
-         InputVoltage=Dec_val;
+        Dec_val= round(m*(CurrentTime-InitialTime)+InitialV);
+        InputVoltage=Dec_val;
 
         for(int i=7; i>=0; i--){
           bool LogicState = bitRead(InputVoltage, i); 
@@ -135,7 +129,6 @@ void DecodeDataChain(){
           Serial.println(analogRead(OutputPinMeasurement));
           Serial.println(micros());
         } 
-  
         CurrentTime = micros();
       }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));
     }
@@ -176,8 +169,6 @@ void DecodeDataChain(){
           Serial.println(analogRead(OutputPinMeasurement));
           Serial.println(micros());
         }
-        Serial.println(Dec_val);
-  
         CurrentTime = micros();
       }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));
     }       //While MeasurementTime hasn't elapsed yet, keep up measuring
@@ -186,11 +177,11 @@ void DecodeDataChain(){
     //Serial.println(dif);  
     //Serial.println(samples);                                                      //Shows the amount of measurements done 
                                                             
-    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
-      digitalWrite(FeedingVoltagePin[j],LOW);
-    }
+//    for (int j=1; j<9; j++){                                                      //Turn off all digital pins
+//      digitalWrite(FeedingVoltagePin[j],LOW);
+//    }
 
-    Serial.println("Measurements completed!");Serial.println(" ");
+    Serial.println("Measurements completed!");
     }
     
 }
