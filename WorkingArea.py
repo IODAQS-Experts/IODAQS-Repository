@@ -22,8 +22,6 @@ class Tab2Widgets:
         self.CreateButtons()
         return self.FrameTab2
 
-
-
     def CreateButtons(self):
         #-------Buttons in Controls Label Frame ---------#
         self.RunButton= Button(self.Controls_LFrame, command=self.RunMeasurements, text="Ejecutar", anchor='c', font=('Arial Rounded MT Bold', 9))
@@ -35,16 +33,15 @@ class Tab2Widgets:
         self.SaveButton= Button(self.Controls_LFrame, command=self.SaveMeasurements, text="Guardar", anchor='c', font=('Arial Rounded MT Bold', 9))
         self.SaveButton.grid(row=0, column=2,padx=8 )
         
-
-
-
     def CreateComboboxes(self):
         #-------Comboboxes in SamplingTime Label Frame----------#
         self.SamplingPrefix = ttk.Combobox(self.SamplingTime_LFrame,width=3, value=['ks','s','ms','us'])
         self.SamplingPrefix.set('s')
-        self.SamplingPrefix.grid(row=0, column=2)  
+        self.SamplingPrefix.grid(row=0, column=2)
 
-
+        #-------Comboboxes in Signal Label Frame----------#
+        self.PeriodPrefix = ttk.Combobox(self.Signal_LFrame,width=3, value=['s','ms','us'])
+        self.PeriodPrefix.set('ms')    
 
     def CreateFrames(self,ParentName):
         self.FrameTab2 = ttk.Frame(ParentName, width='1200', height='600')
@@ -63,18 +60,17 @@ class Tab2Widgets:
         self.EndTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Duración: (s)', anchor='c', font=('Arial Rounded MT Bold', 9))
         self.EndTimeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
 
-        self.TotalTimeLabel=Label(self.MeasurementTime_LFrame, text = 'Tiempo Total: (s)', anchor='c', font=('Arial Rounded MT Bold', 9))
-        self.TotalTimeLabel.grid(row=1, column=0, columnspan=2, ipady=5, pady=5)
-
         #-------Labels in SamplingTime Label Frame----------#
         
         self.SamplingTime_Label=Label(self.SamplingTime_LFrame, text = 'Tiempo de Muestreo:  ', anchor='c', font=('Arial Rounded MT Bold', 9))
         self.SamplingTime_Label.grid(row=0, column=0, ipadx=1, ipady=5, pady=5)
 
         #-------Labels in Signal Label Frame-----------------#
-        self.SignalTypeLabel=Label(self.Signal_LFrame, text = 'Tipo de Señal:  ', anchor='c', font=('Arial Rounded MT Bold', 9))
+        self.SignalTypeLabel=Label(self.Signal_LFrame, text = 'Tipo de Señal:  ', anchor='w', font=('Arial Rounded MT Bold', 9))
         self.SignalTypeLabel.grid(row=0, column=0, ipadx=1, ipady=5, pady=5, columnspan=2)
 
+        self.PeriodLabel=Label(self.Signal_LFrame, text = 'Periodo:  ', anchor='w', font=('Arial Rounded MT Bold', 9))
+        
 
     def CreateLabelFrames(self,ParentFrame):
         self.MeasurementTime_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Tiempo de Medición", 
@@ -98,31 +94,36 @@ class Tab2Widgets:
         self.MatplotlibGraph_LFrame.grid(row=1, column=1, padx = 40, pady=15, ipadx=20,ipady=5)
 
 
+        #-------Frames in Signal Label Frame----------#
+        self.SlidersFrame = ttk.Frame(self.Signal_LFrame, width='240', height='20')
+        self.SlidersFrame.grid(row=4,column=0, columnspan=3)
 
     def CreateRadiobuttons(self):
         #-------Radiobuttons in Signal Label Frame----------#
         self.SignalType = StringVar()
         self.SignalType.set("step")
 
-        self.StepInput = Radiobutton(self.Signal_LFrame, text='Escalon', value='step', variable=self.SignalType)
+        self.StepInput = Radiobutton(self.Signal_LFrame,command=self.SetSliderLabel, text='Escalon', value='step', variable=self.SignalType)
         self.StepInput.grid(row=1, column=0 )
 
-        self.SlopeInput = Radiobutton(self.Signal_LFrame, text='Rampa', value='slope', variable=self.SignalType)
+        self.SlopeInput = Radiobutton(self.Signal_LFrame,command=self.SetSliderLabel, text='Rampa', value='slope', variable=self.SignalType)
         self.SlopeInput.grid(row=1, column=1)
 
-        self.NoiseInput = Radiobutton(self.Signal_LFrame, text='Ruido', value='noise', variable=self.SignalType)
+        self.NoiseInput = Radiobutton(self.Signal_LFrame,command=self.SetSliderLabel, text='Ruido', value='noise', variable=self.SignalType)
         self.NoiseInput.grid(row=2, column=0)
 
-        self.SineInput = Radiobutton(self.Signal_LFrame, text='Senoidal', value='senoidal', variable=self.SignalType)
+        self.SineInput = Radiobutton(self.Signal_LFrame,command=self.SetSliderLabel, text='Seno', value='sine', variable=self.SignalType)
         self.SineInput.grid(row=2, column=1)
         
-
-
     def CreateSliders(self):
-        self.InputVoltage = Scale(self.Signal_LFrame, from_=0, to=5, orient='horizontal', resolution=.01, label='Voltaje')
-        self.InputVoltage.grid(row=3, column=0, columnspan=2)
+        
+        self.RightSliderCaption = 'Voltaje Escalón'
+        self.FinalVoltage = Scale(self.SlidersFrame, length=130, from_=0, to=5, orient='horizontal', resolution=.01, label=self.RightSliderCaption)
+        
 
-
+        self.LeftSliderCaption = 'Voltaje Escalón'
+        self.InitialVoltage = Scale(self.SlidersFrame,length=130, from_=0, to=5, orient='horizontal', resolution=.01, label=self.LeftSliderCaption)
+        self.InitialVoltage.grid(row=0, column=0)
 
     def CreateSpinBox(self,ParentFrame):
         #-------SpinBoxes in MeasurementTime Label Frame-------#
@@ -137,3 +138,9 @@ class Tab2Widgets:
         self.SampligCoefficient = Spinbox(self.SamplingTime_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0, textvariable=self.samplingString)
         self.SampligCoefficient.grid(row=0, column=1, ipadx=0,ipady=0, padx=8)
 
+        #-------SpinBoxes in Signal Label Frame----------#
+        self.periodString = StringVar()
+        self.periodString.set("1")
+        self.PeriodCoefficient = Spinbox(self.Signal_LFrame, wrap=True, width=5,  from_=0.0, to=1800.0, textvariable=self.periodString)
+        
+    

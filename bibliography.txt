@@ -31,6 +31,7 @@ Numpy documentation: https://numpy.org/doc/stable/reference/generated/numpy.save
 
 datatime documentation: https://www.geeksforgeeks.org/get-current-date-using-python/
 
+change widget properties: https://stackhowto.com/how-to-change-label-text-on-button-click-in-tkinter/#:~:text=Change%20Label%20Text%20Using%20'text,text'%20property%20of%20the%20label.&text=tkinter%20as%20tk-,def%20changeText()%3A,%3D%20%22Welcome%20to%20StackHowTo!%22
 Matplotlib implementation: https://www.youtube.com/watch?v=Zw6M-BnAPP0&ab_channel=sentdex
                            https://stackoverflow.com/questions/53155949/how-to-update-matplotlib-embedded-into-tkinter
                            https://pythonguides.com/matplotlib-tick-params/

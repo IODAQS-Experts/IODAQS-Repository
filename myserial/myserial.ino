@@ -47,53 +47,140 @@ void DecodeDataChain(){
 
         //##### SECTION [Measuring and feeding the circuit]
     unsigned long InitialTime,CurrentTime,MeasurementTime,SamplingTime,TriggerTime;
+    MeasurementTime = parameters[0].toFloat();                           
+    SamplingTime = parameters[1].toFloat();                              
+    int ArraysLenght = (int)(MeasurementTime/SamplingTime);              
     
-    MeasurementTime = parameters[0].toFloat();                            //MeasurementTime in seconds conveerted in microseconds
-    SamplingTime = parameters[1].toFloat();                               //SamplingTime in seconds converted in microseconds
-    int ArraysLenght = (int)(MeasurementTime/SamplingTime);               //Lenght of all the measurements arrays
-    
-    int samples=0;
+    byte InputVoltage;
+    long Dec_val;
+    String SignalType = parameters[2];
+    int FinalV = parameters[3].toFloat();
+    int InitialV = parameters[4].toFloat();
+    unsigned long Period = parameters[5].toInt();
+    unsigned long FinalTime = MeasurementTime+SamplingTime;  
+ 
 
-    //###DAC 8 bits converter DC signal
-    String SignalType = parameters[2];                                    //Signal Type
-  
-    byte InputVoltage = parameters[3].toInt();                            //Voltage in binary numbers in range 0 to 255
-    //Serial.println(SignalType);                                                 
-    //Serial.println(parameters[3]);
+    //#########ASIGNACIÓN DE TIEMPOS#########                                                  
+    float m =((float)(FinalV-InitialV)/((float)(FinalTime-InitialTime)));    //  (FinalV-InitialV)/(FinalTime-InitialTime)   
+    Serial.print(SignalType);Serial.print(" ");Serial.println(m);
+
+    //#########EVALUAR SignalType###################3
+
+//    else (SignalType == "noise"){    
+//    }
+
+
+    //#######STEP BUCLE#####################
+    //#######STEP BUCLE#####################
+    //#######STEP BUCLE#####################
+    if((SignalType == "step")){
+      InputVoltage = FinalV;
+      InitialTime = micros();                                                      
+      CurrentTime = micros();                                                      
+      TriggerTime = InitialTime;
         
-    //Serial.println(InputVoltage, BIN);
-    //------------------------------------
-    
-    for(int i=7; i>=0; i--){
-      bool LogicState = bitRead(InputVoltage, i); 
-      //Serial.print(LogicState, BIN);  //shows: 00000011
-      if(LogicState==1){
-          digitalWrite(FeedingVoltagePin[i],HIGH);
-          //Serial.print(FeedingVoltagePin[i]);Serial.println("high");
+      do{
+        for(int i=7; i>=0; i--){
+          bool LogicState = bitRead(InputVoltage, i); 
+          //Serial.print(LogicState, BIN);  //shows: 00000011
+          if(LogicState==1){
+              digitalWrite(FeedingVoltagePin[i],HIGH);
+          }
+          else{
+            digitalWrite((FeedingVoltagePin[i]),LOW);
+            }
       }
-      else{
-        digitalWrite((FeedingVoltagePin[i]),LOW);
-        //Serial.print(FeedingVoltagePin[i]);Serial.println("low");
-        }
-    }
-    //Serial.println("########## ");
-    InitialTime = micros();                                                       //Arduino board initial time
-    CurrentTime = micros();                                                       //Arduino board current time
-    TriggerTime = InitialTime;                                                    //Arduino board measurements start time
-
-    do{
       if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
         TriggerTime = CurrentTime;
-        
         //take the measurement  
         Serial.println(analogRead(InputPinMeasurement));
         Serial.println(analogRead(OutputPinMeasurement));
         Serial.println(micros());
+      } 
+        Serial.println(FinalV);
+  
+        CurrentTime = micros();
+      }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));
+    }
+
+    
+    //#######SLOPE BUCLE#####################
+    //#######SLOPE BUCLE#####################
+    //#######SLOPE BUCLE#####################
+    if((SignalType == "slope")){
+
+      InitialTime = micros();                                                      
+      CurrentTime = micros();                                                      
+      TriggerTime = InitialTime;
         
-        samples = samples+1;
-      }
-      CurrentTime = micros();
-    }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));        //While MeasurementTime hasn't elapsed yet, keep up measuring
+      do{
+         Dec_val= round(m*(CurrentTime-InitialTime)+InitialV);
+         Serial.println(Dec_val);
+         InputVoltage=Dec_val;
+
+        for(int i=7; i>=0; i--){
+          bool LogicState = bitRead(InputVoltage, i); 
+          //Serial.print(LogicState, BIN);  //shows: 00000011
+          if(LogicState==1){
+              digitalWrite(FeedingVoltagePin[i],HIGH);
+          }
+          else{
+            digitalWrite((FeedingVoltagePin[i]),LOW);
+            }
+        }
+        if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
+          TriggerTime = CurrentTime;
+          //take the measurement  
+          Serial.println(analogRead(InputPinMeasurement));
+          Serial.println(analogRead(OutputPinMeasurement));
+          Serial.println(micros());
+        } 
+  
+        CurrentTime = micros();
+      }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));
+    }
+
+      
+    //#######SINE BUCLE#####################
+    //#######SINE BUCLE#####################
+    //#######SINE BUCLE#####################
+    if((SignalType == "sine")){
+      InitialTime = micros();                                                      
+      CurrentTime = micros();                                                      
+      TriggerTime = InitialTime;
+        
+      do{
+        Dec_val = round(InitialV + float(FinalV*sin((2*PI/(float)Period)*CurrentTime)));
+        if (Dec_val>255){
+          Dec_val = 255;
+          InputVoltage = Dec_val;
+        }
+        if(0>Dec_val){
+          Dec_val = 0;
+          InputVoltage = Dec_val;
+        }
+        for(int i=7; i>=0; i--){
+          bool LogicState = bitRead(InputVoltage, i); 
+
+          if(LogicState==1){
+            digitalWrite(FeedingVoltagePin[i],HIGH);
+          }
+          else{
+            digitalWrite((FeedingVoltagePin[i]),LOW);
+            }
+        }
+        if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
+          TriggerTime = CurrentTime;
+          //take the measurement  
+          Serial.println(analogRead(InputPinMeasurement));
+          Serial.println(analogRead(OutputPinMeasurement));
+          Serial.println(micros());
+        }
+        Serial.println(Dec_val);
+  
+        CurrentTime = micros();
+      }    while((CurrentTime-InitialTime)<=(MeasurementTime+SamplingTime));
+    }       //While MeasurementTime hasn't elapsed yet, keep up measuring
          
     unsigned long dif = CurrentTime-(InitialTime+SamplingTime);                   //Shows the "real" MeasurementTime
     //Serial.println(dif);  
