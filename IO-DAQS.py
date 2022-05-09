@@ -18,6 +18,7 @@ import matplotlib
 matplotlib.use("TkAgg")         #backend
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
+import random
 
 
 class IO_DAQS(Tab2Widgets):
@@ -25,7 +26,7 @@ class IO_DAQS(Tab2Widgets):
         super().__init__()
         self.MainWindow = Window
         self.MainWindow_Width="1050"
-        self.MainWindow_Height="650"
+        self.MainWindow_Height="700"
         self.MainWindow.geometry('{}x{}'.format(self.MainWindow_Width,self.MainWindow_Height))
         self.Title="Interfaz Python-Arduino"
 
@@ -101,20 +102,32 @@ class IO_DAQS(Tab2Widgets):
             for key in prefix:
                 if self.SamplingPrefix.get()==key:
                     self.SamplingTime=str(round(float(self.SampligCoefficient.get())*prefix.get(key),6))
+                
+                if self.PeriodPrefix.get()==key:
+                    self.Period=str(round(float(self.PeriodCoefficient.get())*prefix.get(key),6))
 
             #Time quantities (in seconds) must be greater than 0!      
-            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0018 and float(self.MeasurementTime.get())>float(self.SamplingTime):
+            if float(self.MeasurementTime.get())>0 and float(self.SamplingTime)>=.0018 and float(self.MeasurementTime.get())>float(self.SamplingTime) and float(self.Period)>0:
                 
                 #Converting times to microseconds:
-                MeasurementTime = float(self.MeasurementTime.get())*1000000
-                SamplingTime = float(self.SamplingTime)*1000000
+                MeasurementTime = float(self.MeasurementTime.get())
+                SamplingTime = float(self.SamplingTime)
+                Period = float(self.Period)
 
                 #InputVoltage convertion to a 0-255 value (for ditial pins)
                 self.MaxVoltage = 5
-                InputVoltage_decimal = math.trunc((255/self.MaxVoltage)*self.InputVoltage.get())
-                print(InputVoltage_decimal)
+                InputFinalVoltage_decimal = math.trunc((255/self.MaxVoltage)*self.FinalVoltage.get())
+                print(InputFinalVoltage_decimal)
 
-                return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputVoltage_decimal)
+                InputInitialVoltage_decimal = math.trunc((255/self.MaxVoltage)*self.InitialVoltage.get())
+                print(InputInitialVoltage_decimal)
+
+                if self.SignalType.get()=='step':
+                    InputFinalVoltage_decimal=0
+                
+                seed = random.randint(-99999999,99999999)
+
+                return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputInitialVoltage_decimal),str(InputFinalVoltage_decimal),str(Period),str(seed)
         except:
             pass      
 
@@ -175,13 +188,43 @@ class IO_DAQS(Tab2Widgets):
                 ('Text Document', '*.txt')]
             file = asksaveasfile(filetypes = files, defaultextension = files)
             if file:
-                file.write("""Date: {0}
-    Measuring time (s): {1}
-    Sampling time (s): {2}
-    Signal Type: {3}
-    Input voltage (V): {4} 
-    """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InputVoltage.get()))
+                if self.SignalType.get()=="step":
+                    file.write("""Date: {0}
+        Measuring time (s): {1}
+        Sampling time (s): {2}
+        Signal Type: {3}
+        Input voltage (V): {4} 
+        """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InitialVoltage.get()))
 
+                elif self.SignalType.get()=="slope":
+                    file.write("""Date: {0}
+        Measuring time (s): {1}
+        Sampling time (s): {2}
+        Signal Type: {3}
+        Initial voltage (V): {4}
+        Final voltage (V): {5}
+        """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InitialVoltage.get(),self.FinalVoltage.get()))
+
+                elif self.SignalType.get()=="sine":
+                    file.write("""Date: {0}
+        Measuring time (s): {1}
+        Sampling time (s): {2}
+        Signal Type: {3}
+        Amplitude voltage (V): {4}
+        Equilibrium voltage (V): {5}
+        Period (s): {6}
+        """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InitialVoltage.get(),self.FinalVoltage.get(),self.Period))
+
+                elif self.SignalType.get()=="noise":
+                    file.write("""Date: {0}
+        Measuring time (s): {1}
+        Sampling time (s): {2}
+        Signal Type: {3}
+        Minimum voltage (V): {4}
+        Maximum voltage (V): {5}
+        """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InitialVoltage.get(),self.FinalVoltage.get()))
+                
+                
                 file.write("\nInput Voltage array: \n\n")
                 numpy.savetxt(file,self.InputVoltageArray)
                 
@@ -244,6 +287,43 @@ class IO_DAQS(Tab2Widgets):
         self.Graph.set_facecolor('#465162')           #Grah Background color
         self.Graph.tick_params(axis='x', colors='#92C2E2',labelsize=10)    #setting up X-axis tick color to red
         self.Graph.tick_params(axis='y', colors='#92C2E2',labelsize=10)  #setting up Y-axis tick color to black
+        pass
+
+    def SetSliderLabel(self):
+        if self.SignalType.get()=='step':
+            self.InitialVoltage['label']= "Voltaje Escalón: "
+            self.FinalVoltage.grid_forget()
+
+            self.PeriodCoefficient.grid_forget()
+            self.PeriodLabel.grid_forget()
+            self.PeriodPrefix.grid_forget()
+
+        elif self.SignalType.get()=='slope':
+            self.FinalVoltage.grid(row=0, column=1)
+            self.InitialVoltage['label'] = "Voltaje Inicial: "
+            self.FinalVoltage['label'] = "Voltaje Final: "
+
+            self.PeriodCoefficient.grid_forget()
+            self.PeriodLabel.grid_forget()
+            self.PeriodPrefix.grid_forget()
+            
+        elif self.SignalType.get()=='sine':
+            self.FinalVoltage.grid(row=0, column=1)
+            self.InitialVoltage['label'] = "Amplitud de Voltaje: "
+            self.FinalVoltage['label'] = "Voltaje de Equilibrio: "
+
+            self.PeriodCoefficient.grid(row=3, column=1, ipadx=0,ipady=0,)
+            self.PeriodLabel.grid(row=3, column=0, ipadx=1, ipady=5, pady=5)
+            self.PeriodPrefix.grid(row=3, column=2)
+
+        elif self.SignalType.get()=='noise':
+            self.FinalVoltage.grid(row=0, column=1)
+            self.InitialVoltage['label'] = "Voltaje Mínimo: "
+            self.FinalVoltage['label'] = "Voltaje Máximo: "
+
+            self.PeriodCoefficient.grid_forget()
+            self.PeriodLabel.grid_forget()
+            self.PeriodPrefix.grid_forget()   
         pass
 
 if __name__ == '__main__':
