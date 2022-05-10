@@ -225,15 +225,9 @@ class IO_DAQS(Tab2Widgets):
         """.format(datetime.now(),self.MeasurementTime.get(),self.SamplingTime,self.SignalType.get(),self.InitialVoltage.get(),self.FinalVoltage.get()))
                 
                 
-                file.write("\nInput Voltage array: \n\n")
-                numpy.savetxt(file,self.InputVoltageArray)
+                file.write("\n[ Time(s), Input(V), Output(V) ]: \n\n")
+                numpy.savetxt(file,self.MeasurementsArray,delimiter=',')
                 
-                file.write("\nOutput Voltage array: \n\n")
-                numpy.savetxt(file,self.OutputVoltageArray)
-
-                file.write("\nTime array: \n\n")
-                numpy.savetxt(file,self.TimeArray)
-
                 messagebox.showinfo(message="Guardado Exitoso!", title="¡Datos guardados exitosamente!") 
                 file.close()
         
@@ -242,6 +236,8 @@ class IO_DAQS(Tab2Widgets):
         self.InputVoltageList = []
         self.OutputVoltageList = []
         self.TimeList =[]
+
+        self.MeasurementsList=[]
         for index in range(2,(len(self.readings)-1),3):             
             #The last data is always time so the index is referenced to each datatime indexes' position (because of how readline() works)
             #time in seconds
@@ -249,15 +245,20 @@ class IO_DAQS(Tab2Widgets):
             #Voltages conversion*
             self.OutputVoltageList.append(self.MaxVoltage*(float(self.readings[index-1][:-2])/1023))  
             self.InputVoltageList.append(self.MaxVoltage*(float(self.readings[index-2][:-2])/1023))   
-        
+
+            self.MeasurementsList.append([float(self.readings[index][:-2])/1000000,
+                                        self.MaxVoltage*(float(self.readings[index-2][:-2])/1023),
+                                        self.MaxVoltage*(float(self.readings[index-1][:-2])/1023)])
         # Arrays are transformed into arrays:
         self.InputVoltageArray = numpy.array(self.InputVoltageList)
         self.OutputVoltageArray = numpy.array(self.OutputVoltageList)
         self.TimeArray = numpy.array(self.TimeList)
+        self.MeasurementsArray = numpy.array(self.MeasurementsList)
 
-        print(self.TimeArray, type(self.TimeArray))
-        print(self.InputVoltageArray,type(self.InputVoltageArray))
-        print(self.OutputVoltageArray,type(self.OutputVoltageArray))
+        #print(self.TimeArray, type(self.TimeArray))
+        #print(self.InputVoltageArray,type(self.InputVoltageArray))
+        for record in self.MeasurementsArray:
+            print(record)
 
     def PlotData(self):
         if len( self.InputVoltageArray) != 0:

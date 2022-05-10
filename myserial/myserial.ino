@@ -141,15 +141,15 @@ void DecodeDataChain(){
       TriggerTime = InitialTime;
         
       do{
-        InputVoltage = round(InitialV + float(FinalV*sin((2*PI/(float)Period)*CurrentTime)));
+        InputVoltage = round(FinalV + float(InitialV*sin((2*PI/(float)Period)*CurrentTime)));
         
-        if (Dec_val>255){
+        if (InputVoltage>=255){
           InputVoltage = 255;
         }
-        if(0>Dec_val){
+        if(InputVoltage<=0){
           InputVoltage = 0;
         }
-
+        
         for(int i=7; i>=0; i--){
           bool LogicState = bitRead(InputVoltage, i); 
 
