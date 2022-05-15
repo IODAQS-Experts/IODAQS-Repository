@@ -127,9 +127,16 @@ class IO_DAQS(Tab2Widgets):
                 
                 seed = random.randint(-99999999,99999999)
 
+                if self.SignalType.get()=='noise' and InputInitialVoltage_decimal>=InputFinalVoltage_decimal:
+                    self.ShowErrorMessage( "Error!","!El voltaje minimo debe ser menor que el voltaje máximo. Por seguridad los valores se han invertido para coincidir!")
+                    InputInitialVoltage_decimal, InputFinalVoltage_decimal=InputFinalVoltage_decimal,InputInitialVoltage_decimal
+                
                 return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputInitialVoltage_decimal),str(InputFinalVoltage_decimal),str(Period),str(seed)
+                
+                
+                
         except:
-            pass      
+            pass    
 
     def SendDataToArduino(self,parameters=()):
         try:    
@@ -143,14 +150,14 @@ class IO_DAQS(Tab2Widgets):
             
             
         except:
-            self.ShowErrorMessage("Error de datos","Valores 'Tiempo de medicion' o 'muestreo incorrectos'*")
+            self.ShowErrorMessage("Error de datos" , "Datos (tiempos o voltajes) inválidos*")
             self.measurementString.set("0")
             self.samplingString.set("0")
     
     def EvaluateConexion(self):
         try:
             self.arduino = serial.Serial()    #Open serial Port
-            self.arduino.port = "com3"
+            self.arduino.port = self.SerialPort.get()
             self.arduino.baudrate = 115200
             self.arduino.open()
         except:
@@ -232,43 +239,49 @@ class IO_DAQS(Tab2Widgets):
                 file.close()
         
     def Create_ReadMeasurementsArrays(self):
-        #Organizing info in lists:
-        self.InputVoltageList = []
-        self.OutputVoltageList = []
-        self.TimeList =[]
+        try:
+            #Organizing info in lists:
+            self.InputVoltageList = []
+            self.OutputVoltageList = []
+            self.TimeList =[]
 
-        self.MeasurementsList=[]
-        for index in range(2,(len(self.readings)-1),3):             
-            #The last data is always time so the index is referenced to each datatime indexes' position (because of how readline() works)
-            #time in seconds
-            self.TimeList.append(float(self.readings[index][:-2])/1000000)   
-            #Voltages conversion*
-            self.OutputVoltageList.append(self.MaxVoltage*(float(self.readings[index-1][:-2])/1023))  
-            self.InputVoltageList.append(self.MaxVoltage*(float(self.readings[index-2][:-2])/1023))   
+            self.MeasurementsList=[]
+            for index in range(2,(len(self.readings)-1),3):             
+                #The last data is always time so the index is referenced to each datatime indexes' position (because of how readline() works)
+                #time in seconds
+                self.TimeList.append(float(self.readings[index][:-2])/1000000)   
+                #Voltages conversion*
+                self.OutputVoltageList.append(self.MaxVoltage*(float(self.readings[index-1][:-2])/1023))  
+                self.InputVoltageList.append(self.MaxVoltage*(float(self.readings[index-2][:-2])/1023))   
 
-            self.MeasurementsList.append([float(self.readings[index][:-2])/1000000,
-                                        self.MaxVoltage*(float(self.readings[index-2][:-2])/1023),
-                                        self.MaxVoltage*(float(self.readings[index-1][:-2])/1023)])
-        # Arrays are transformed into arrays:
-        self.InputVoltageArray = numpy.array(self.InputVoltageList)
-        self.OutputVoltageArray = numpy.array(self.OutputVoltageList)
-        self.TimeArray = numpy.array(self.TimeList)
-        self.MeasurementsArray = numpy.array(self.MeasurementsList)
+                self.MeasurementsList.append([float(self.readings[index][:-2])/1000000,
+                                            self.MaxVoltage*(float(self.readings[index-2][:-2])/1023),
+                                            self.MaxVoltage*(float(self.readings[index-1][:-2])/1023)])
+            # Arrays are transformed into arrays:
+            self.InputVoltageArray = numpy.array(self.InputVoltageList)
+            self.OutputVoltageArray = numpy.array(self.OutputVoltageList)
+            self.TimeArray = numpy.array(self.TimeList)
+            self.MeasurementsArray = numpy.array(self.MeasurementsList)
 
-        #print(self.TimeArray, type(self.TimeArray))
-        #print(self.InputVoltageArray,type(self.InputVoltageArray))
-        for record in self.MeasurementsArray:
-            print(record)
+            #print(self.TimeArray, type(self.TimeArray))
+            #print(self.InputVoltageArray,type(self.InputVoltageArray))
+            for record in self.MeasurementsArray:
+                print(record)
+        except:
+            pass
 
     def PlotData(self):
-        if len( self.InputVoltageArray) != 0:
+        try:
+            if len( self.InputVoltageArray) != 0:
 
-            self.Graph.clear()
-            self.Graph.plot(self.TimeArray,self.InputVoltageArray, color='#A5F4FA',linestyle='solid', marker='o',markersize='4', label="V_in")
-            self.Graph.plot(self.TimeArray,self.OutputVoltageArray, color='#E3FA98',linestyle='solid', marker='x',markersize='4', label="V_out")
-            self.canvas.draw_idle()
-            self.SetGraphProperties()
-            print("graph created!")
+                self.Graph.clear()
+                self.Graph.plot(self.TimeArray,self.InputVoltageArray, color='#A5F4FA',linestyle='solid', marker='o',markersize='4', label="V_in")
+                self.Graph.plot(self.TimeArray,self.OutputVoltageArray, color='#E3FA98',linestyle='solid', marker='x',markersize='4', label="V_out")
+                self.canvas.draw_idle()
+                self.SetGraphProperties()
+                print("graph created!")
+        except:
+            pass
         
     def SetGraphProperties(self):
         font = {'family': 'Arial Rounded MT Bold',

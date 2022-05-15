@@ -39,9 +39,14 @@ class Tab2Widgets:
         self.SamplingPrefix.set('s')
         self.SamplingPrefix.grid(row=0, column=2)
 
-        #-------Comboboxes in Signal Label Frame----------#
+        #-------Comboboxes in Signal Label Frame----------------#
         self.PeriodPrefix = ttk.Combobox(self.Signal_LFrame,width=3, value=['s','ms','us'])
         self.PeriodPrefix.set('ms')    
+
+        #-------Comboboxes in Controls Label Frame--------------#
+        self.SerialPort = ttk.Combobox(self.Controls_LFrame,width=6, value=['com1','com2','com3','com4','com5','com6'])
+        self.SerialPort.set('com3')
+        self.SerialPort.grid(row=1, column=1, padx=10,columnspan=2)    
 
     def CreateFrames(self,ParentName):
         self.FrameTab2 = ttk.Frame(ParentName, width='1200', height='600')
@@ -71,6 +76,9 @@ class Tab2Widgets:
 
         self.PeriodLabel=Label(self.Signal_LFrame, text = 'Periodo:  ', anchor='w', font=('Arial Rounded MT Bold', 9))
         
+        #-------Labels in Controls Label Frame-----------------#
+        self.PortLabel=Label(self.Controls_LFrame, text = 'Puerto serial:  ', anchor='w', font=('Arial Rounded MT Bold', 9))
+        self.PortLabel.grid(row=1, column=0, ipadx=1, ipady=5, pady=5, columnspan=2)
 
     def CreateLabelFrames(self,ParentFrame):
         self.MeasurementTime_LFrame = LabelFrame(self.ConfigurationsFrame, width=300, height= 200, text="Tiempo de Medición", 
