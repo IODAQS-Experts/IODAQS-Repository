@@ -47,9 +47,9 @@ void DecodeDataChain(){
     unsigned long InitialTime,CurrentTime,MeasurementTime,SamplingTime,TriggerTime;
     MeasurementTime = parameters[0].toFloat()*1000000;                           
     SamplingTime = parameters[1].toFloat()*1000000;                              
-    //int ArraysLenght = (int)(MeasurementTime/SamplingTime);              
+    int ArraysLenght = (int)(MeasurementTime/SamplingTime);              
     
-    byte InputVoltage;
+    long InputVoltage;
     long Dec_val;
     String SignalType = parameters[2];
     int FinalV = parameters[4].toInt();
@@ -142,24 +142,28 @@ void DecodeDataChain(){
         
       do{
         InputVoltage = round(FinalV + float(InitialV*sin((2*PI/(float)Period)*CurrentTime)));
-        
-        if (InputVoltage>=255){
+
+        if (InputVoltage>255){
           InputVoltage = 255;
+          
         }
-        if(InputVoltage<=0){
+        if(InputVoltage<0){
           InputVoltage = 0;
         }
-        
+
         for(int i=7; i>=0; i--){
           bool LogicState = bitRead(InputVoltage, i); 
 
           if(LogicState==1){
             digitalWrite(FeedingVoltagePin[i],HIGH);
+            //Serial.print(1);
           }
           else{
             digitalWrite((FeedingVoltagePin[i]),LOW);
+            //Serial.print(0);
             }
         }
+        //Serial.println("");
         if((CurrentTime-TriggerTime)>SamplingTime){                                 //if the sampling time has elapsed, then update TriggerTime and measure  
           TriggerTime = CurrentTime;
           //take the measurement  
