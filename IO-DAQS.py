@@ -21,6 +21,7 @@ from matplotlib.figure import Figure
 import random
 
 
+
 class IO_DAQS(Tab2Widgets):
     def __init__(self, Window):
         super().__init__()
@@ -73,15 +74,27 @@ class IO_DAQS(Tab2Widgets):
         self.FrameTab1 = ttk.Frame(ParentName, width='1200', height='600')
         self.FrameTab1.grid(row=1,column=0)
         
-        self.Title1 = Label(self.FrameTab1, text = 'Welcome "Home" ',padx=50, pady=20,font=('Arial Rounded MT Bold', 20))
+        self.Title1 = Label(self.FrameTab1, text = 'Menú Principal',padx=50, pady=20,font=('Arial Rounded MT Bold', 20))
         self.Title1.grid(row=0, column=0)
     
     def FillTab3(self,ParentName):
         self.FrameTab3 = ttk.Frame(ParentName, width='1200', height='600')
-        self.FrameTab3.grid(row=1,column=0)
+        self.FrameTab3.grid(row=1,column=0, columnspan=4)
 
-        self.Title3 = Label(self.FrameTab3, text = 'Welcome "About us"',padx=50,pady=20, font=('Arial Rounded MT Bold', 20))
+        self.Title3 = Label(self.FrameTab3, text = 'Acerca de Nosotros',padx=50,pady=20, font=('Arial Rounded MT Bold', 20))
         self.Title3.grid(row=0, column=0)
+
+        self.AboutUs = Label(self.FrameTab3, text = """
+        Porgrama desarrollado por: Julio de Jesús Moreno Sánchez
+
+        Correo: juliomoreno7217@gmail.com
+
+        Link del repositorio: https://github.com/IODAQS-Experts/IODAQS-Repository.git
+
+        Fecha de elaboración: marzo 23 - mayo 20, 2022
+
+        """,anchor='e', font=('Arial Rounded MT Bold', 10))
+        self.AboutUs.grid(row=1, column=0)
     
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
     ##INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE####INTERACTION##ZONE##
@@ -117,10 +130,10 @@ class IO_DAQS(Tab2Widgets):
                 #InputVoltage convertion to a 0-255 value (for ditial pins)
                 self.MaxVoltage = 5
                 InputFinalVoltage_decimal = math.trunc((255/self.MaxVoltage)*self.FinalVoltage.get())
-                print(InputFinalVoltage_decimal)
+
 
                 InputInitialVoltage_decimal = math.trunc((255/self.MaxVoltage)*self.InitialVoltage.get())
-                print(InputInitialVoltage_decimal)
+
 
                 if self.SignalType.get()=='step':
                     InputFinalVoltage_decimal=0
@@ -133,19 +146,16 @@ class IO_DAQS(Tab2Widgets):
                 
                 return str(MeasurementTime),str(SamplingTime),self.SignalType.get(),str(InputInitialVoltage_decimal),str(InputFinalVoltage_decimal),str(Period),str(seed)
                 
-                
-                
         except:
             pass    
 
     def SendDataToArduino(self,parameters=()):
         try:    
             self.DataChain = ",".join(parameters)   #makes a single string separated by the symbol inside ""
-            print(self.DataChain)
             
             self.EvaluateConexion()
 
-            print(self.arduino.readline().decode(encoding='ascii', errors='strict'))
+            self.arduino.readline().decode(encoding='ascii', errors='strict')
             self.arduino.write(self.DataChain.encode("ascii", errors='strict'))
             
             
@@ -176,8 +186,6 @@ class IO_DAQS(Tab2Widgets):
                 reading = self.arduino.readline().decode(encoding='ascii', errors='strict')
                 self.readings.append(reading) 
 
-            for i in self.readings:
-                print(i[:-2])
             messagebox.showinfo(message="Lectura Exitosa!", title="¡Datos leídos exitosamente!") 
         except:
             self.ShowErrorMessage( "Fallo en Conexión","¡Falló la Conexión con Arduino!")
@@ -263,10 +271,6 @@ class IO_DAQS(Tab2Widgets):
             self.TimeArray = numpy.array(self.TimeList)
             self.MeasurementsArray = numpy.array(self.MeasurementsList)
 
-            #print(self.TimeArray, type(self.TimeArray))
-            #print(self.InputVoltageArray,type(self.InputVoltageArray))
-            for record in self.MeasurementsArray:
-                print(record)
         except:
             pass
 
@@ -279,7 +283,6 @@ class IO_DAQS(Tab2Widgets):
                 self.Graph.plot(self.TimeArray,self.OutputVoltageArray, color='#E3FA98',linestyle='solid', marker='x',markersize='4', label="V_out")
                 self.canvas.draw_idle()
                 self.SetGraphProperties()
-                print("graph created!")
         except:
             pass
         
@@ -293,7 +296,7 @@ class IO_DAQS(Tab2Widgets):
         self.Graph.grid(color='#667B84')
         self.Graph.set_xlabel("Tiempo (s)",fontdict = font)
         self.Graph.set_ylabel("Voltaje (V)",fontdict = font)
-        self.Graph.legend()  
+        self.Graph.legend(["V_in","V_out"])  
         self.Graph.grid(color='#667B84')
         self.GraphFigure.patch.set_facecolor('#465162')
         self.Graph.xaxis.label.set_color('white')        #setting up X-axis label color 

@@ -58,7 +58,7 @@ class Tab2Widgets:
 
     def CreateLabels(self,ParentFrame):
         #-------Labels in FrameTab2-------------------------#
-        self.Title=Label(ParentFrame,text = 'Welcome "WorkingArea"', padx=50, pady=20, anchor='e', font=('Arial Rounded MT Bold', 20), relief="solid")
+        self.Title=Label(ParentFrame,text = 'Área de Trabajo', padx=50, pady=20, anchor='e', font=('Arial Rounded MT Bold', 20), relief="solid")
         self.Title.grid(row=0, column=0, columnspan=1)
 
         #-------Labels in MeasurementTime Label Frame-------#
