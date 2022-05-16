@@ -76,6 +76,13 @@ class IO_DAQS(Tab2Widgets):
         
         self.Title1 = Label(self.FrameTab1, text = 'Menú Principal',padx=50, pady=20,font=('Arial Rounded MT Bold', 20))
         self.Title1.grid(row=0, column=0)
+
+        self.Intro = Label(self.FrameTab1, text = """
+        Esta inerfaz tiene como proposito seleccionar la configuración en la que una placa Arduino
+       pueda llevar a cabo la adquisición de datos, actuando tanto como sistema de medición y 
+        generador de funciones. Para empezar con la configuración dirigase al siguiente apartado.
+        """,anchor='e', font=('Arial Rounded MT Bold', 10))
+        self.Intro.grid(row=1, column=0)
     
     def FillTab3(self,ParentName):
         self.FrameTab3 = ttk.Frame(ParentName, width='1200', height='600')
