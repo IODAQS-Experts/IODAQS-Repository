@@ -1,3 +1,4 @@
+# python 3.10.1
 #Creation date: 2022 / march / 3 / 22:48 h
 
 from tkinter import *
